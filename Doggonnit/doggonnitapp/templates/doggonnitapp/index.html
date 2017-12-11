@@ -1,0 +1,15 @@
+<h1>doggonnit</h1>
+<h2>the app for when your dog is done</h2>
+
+<form action="{% url 'doggonnitapp:mylogin' %}" method="POST">
+    {% csrf_token %}
+
+    <input type="text" placeholder="user name" name="user_name">
+    <input type="password" placeholder="password" name="password">
+
+    <button type="submit"> Sign in </button>
+
+</form>
+
+
+<a href="{% url 'doggonnitapp:registration_page' %}">Create new account</a>
