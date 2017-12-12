@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth import authenticate, login, logout
 
-from .models import BasicProfile, AdvancedProfile, DogProfile
+from .models import UserProfile, DogProfile
 from django.contrib.auth.models import User, Group
 
 
@@ -13,8 +13,8 @@ from django.contrib.auth.models import User, Group
 def index(request):
     return render(request, 'doggonnitapp/index.html', {})
 
-def registration_page(request):
-    return HttpResponse('registration page')
+def registrationPage(request):
+    return render(request, 'doggonnitapp/registrationPage.html', {})
 
 def mylogin(request):
     username = request.POST['user_name']
@@ -27,38 +27,19 @@ def mylogin(request):
         return HttpResponse('invalid credentials')
 
 
-def create_basic_profile(request):
-    group = Group.objects.get(name='Basic')
+def create_user_profile(request):
     print(request.POST)
-    name = request.POST['user_name']
+    name = request.POST['username']
     password = request.POST['password']
     email = request.POST['email']
+    address = request.POST['address']
+    city = request.POST['city']
+    state = request.POST['state']
+    points = 0
 
-    # Create user and save to the database
-    user = User.objects.create_basic_profile(name, email, password)
-    user.save()
-    group.user_set.add(user)
-    group.save()
+    user = User.objects.create_user(name, email, password)
+    profile = UserProfile(user=user, address=address, city=city, state=state, points=points)
+    profile.save()
     login(request, user)
-    return HttpResponse('basic profile created and logged in')
+    return HttpResponse('new profile created and logged in')
 
-def create_advanced_profile(request):
-    group = Group.objects.get(name='Advanced')
-    print(request.POST)
-    name = request.POST['user_name']
-    password = request.POST['password']
-    email = request.POST['user_email']
-    address = request.POST['user_address']
-    points = request.POST['user_points']
-    dogs = request.POST['user_dogs']
-
-    user = User.objects.create_advanced_profile(name, password, email, address, points, dogs)
-    user.save()
-    group.user_set.add(user)
-    login(request, user)
-    return HttpResponse('advanced profile created and logged in')
-
-# def create_dog_profile(request):
-#     group = Group.objects.get(name='Dog')
-#     print(request.POST)
-#

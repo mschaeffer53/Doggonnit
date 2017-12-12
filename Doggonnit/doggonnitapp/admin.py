@@ -5,6 +5,5 @@ from . import models
 
 admin.site.register(models.UserProfile)
 admin.site.register(models.DogProfile)
-admin.site.register(models.BasicUser)
 
 
