@@ -1,0 +1,47 @@
+<h1>dog registration page</h1>
+
+<form action="{% url 'doggonnitapp:create_dog_profile' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <input type="text" placeholder="dog name" name="dog_name" required value="fido">
+    <input type="text" placeholder="dog age" name="dog_age" required value="2">
+
+    <select name="dog_sex" name="dog_sex" required>
+        <option> Female </option>
+        <option> Male </option>
+    </select>
+
+    <select name="dog_breed" required>
+        {% for breed in breeds %}
+            <option>{{breed}}</option>
+        {% endfor %}
+    </select>
+
+    <select name="dog_color" required>
+        {% for color in colors %}
+            <option>{{color}}</option>
+        {% endfor %}
+    </select>
+
+    <select name="dog_weight" required>
+        {% for weight in weights %}
+            <option>{{weight}}</option>
+        {% endfor %}
+    </select>
+
+    <select name="dog_personality" required>
+        {% for personality in personalities %}
+            <option>{{personality}}</option>
+        {% endfor %}
+    </select>
+
+    <input type="file" name="dog_image" accept="image/*" required>
+
+    <button type="submit">Add Dog</button>
+
+</form>
+
+
+
+
+

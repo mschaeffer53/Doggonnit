@@ -14,7 +14,7 @@ class DogProfile(models.Model):
     dog_weight = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(250)])
     dog_personality = models.CharField(max_length=25)
     dog_is_lost = models.BooleanField(default=False)
-    dog_image = models.ImageField(upload_to='pic_folder/')
+    dog_image = models.ImageField()
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -31,4 +31,4 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.user.name} {self.address} {self.city} {self.state} {self.points}'
+        return f'{self.user.username} {self.address} {self.city} {self.state} {self.points}'
