@@ -43,3 +43,4 @@ def create_user_profile(request):
     login(request, user)
     return HttpResponse('new profile created and logged in')
 
+# def create_dog_profile(request):

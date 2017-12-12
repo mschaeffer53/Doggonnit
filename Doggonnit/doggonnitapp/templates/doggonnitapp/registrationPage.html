@@ -1,16 +1,21 @@
-<h1>registration page</h1>
+<h1>human registration page</h1>
 
-<form action="{% url 'doggonnitapp:create_user_profile %}" method="POST">
+<form action="{% url 'doggonnitapp:create_user_profile' %}" method="POST">
     {% csrf_token %}
 
-    <input type="text" placeholder="user name" name="username">
-    <input type="password" placeholder="password" name="password">
-    <input type="email" placeholder="email" name="email">
-    <input type="text" placeholder="Street address" name="address">
-    <input type="text" placeholder="City" name="city">
-    <input type="text" placeholder="State" name="state">
-
-    <button type="submit" name="create_account" onsubmit="return checkform(this);"> create account </button>
+    <input type="text" placeholder="user name" name="username" required>
+    <input type="password" placeholder="password" name="password" required>
+    <input type="email" placeholder="email" name="email" required>
+    <input type="text" placeholder="Street address" name="address" required>
+    <input type="text" placeholder="City" name="city" required>
+    <!--<input type="text" placeholder="State" name="state" required>-->
+    <select name="state" required>
+        <option value="oregon">Oregon</option>
+        <option value="california">California</option>
+        <option value="washington">Washington</option>
+        <option value="hawaii">Hawai'i</option>
+    </select>
+    <button type="submit" name="create_user_profile" onsubmit="return checkform(this);"> create account </button>
 
 </form>
 
