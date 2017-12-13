@@ -29,7 +29,7 @@ def mylogin(request):
     user = authenticate(request, username=username, password=password)
     if user is not None:
         login(request, user)
-        return HttpResponse('successfully logged in')
+        return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
     else:
         return HttpResponse('invalid credentials')
 
@@ -53,7 +53,7 @@ def create_dog_profile(request):
     weights = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
     breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt']
     colors = ['Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
-    patterns = ['Spotted', 'Tuxedo', 'Brindal']
+    patterns = ['Spotted', 'Tuxedo', 'Brindle', 'Harlequin', 'Tricolor', 'Black and Tan']
     personalities = ['Aggressive', 'Playful', 'Friendly', 'Timid/shy', 'Feral', 'Rabid']
 
     if request.method == 'POST':
@@ -82,5 +82,11 @@ def success(request):
 
 def dog_profile(request, dog_id):
     dog = DogProfile.objects.get(pk=dog_id)
+    if request.method == 'POST':
+        dog.dog_is_lost = not dog.dog_is_lost
+        dog.save()
     return render(request, 'doggonnitapp/dog_profile.html', {'dog':dog})
+
+def dogmap(request):
+    return render(request, 'doggonnitapp/dogmap.html', {})
 

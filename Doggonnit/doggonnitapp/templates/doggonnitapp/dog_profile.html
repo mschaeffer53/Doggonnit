@@ -24,11 +24,13 @@
     <div> Gender : {{dog.sex}} </div>
     <div> Breed : {{dog.breed}} </div>
     <div> Color : {{dog.color}} </div>
-    <div> Weight : {{dog.weight}} </div>
+    <div> Pattern : {{dog.pattern}} </div>
+    <div> Weight : {{dog.weight}} lbs </div>
     <div> Personality : {{dog.personality}} </div>
 
 </div>
 
-
-
-
+<form action="{% url 'doggonnitapp:dog_profile' dog.id %}" method="POST">
+    {% csrf_token %}
+    <button type="submit"> Report as missing </button>
+</form>
