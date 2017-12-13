@@ -6,21 +6,22 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class DogProfile(models.Model):
-    dog_name = models.CharField(max_length=25)
-    dog_age = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)])
-    dog_sex = models.CharField(max_length=6)
-    dog_breed = models.CharField(max_length=50)
-    dog_color = models.CharField(max_length=20)
-    dog_weight = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(250)])
-    dog_personality = models.CharField(max_length=25)
+    name = models.CharField(max_length=50)
+    age = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(20)])
+    sex = models.CharField(max_length=6)
+    breed = models.CharField(max_length=50)
+    color = models.CharField(max_length=25)
+    pattern = models.CharField(max_length=25)
+    weight = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(250)])
+    personality = models.CharField(max_length=25)
     dog_is_lost = models.BooleanField(default=False)
     dog_image = models.ImageField()
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.dog_name} {self.dog_age} {self.dog_sex} {self.dog_breed}' \
-               f'{self.dog_color} {self.dog_weight} {self.dog_personality} {self.dog_is_lost}'
+        return f'{self.name} {self.age} {self.sex} {self.breed} {self.pattern}' \
+               f'{self.color} {self.weight} {self.personality} {self.dog_is_lost}'
 
 
 class UserProfile(models.Model):

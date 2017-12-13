@@ -1,7 +1,34 @@
 <style>
     img {
-        width:100px;
+        width:150px;
+        padding-bottom: 5px;
+    }
+
+    h3{
+        color:lightseagreen;
+        font-size: 24px;
     }
 </style>
+
+{% if dog.dog_is_lost  %}
+    <h1>**MISSING**</h1>
+{% endif %}
+
+<h3> {{ dog.name.upper }} </h3>
+
 <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
-{{ dog.dog_name }}
+
+<div class="container">
+
+    <div> Age : {{dog.age}} </div>
+    <div> Gender : {{dog.sex}} </div>
+    <div> Breed : {{dog.breed}} </div>
+    <div> Color : {{dog.color}} </div>
+    <div> Weight : {{dog.weight}} </div>
+    <div> Personality : {{dog.personality}} </div>
+
+</div>
+
+
+
+

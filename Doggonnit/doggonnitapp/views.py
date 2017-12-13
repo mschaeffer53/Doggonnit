@@ -51,27 +51,31 @@ def create_user_profile(request):
 
 def create_dog_profile(request):
     weights = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
-    breeds = ['lab', 'poodle', 'labradoodle']
-    colors = ['chocolate', 'red', 'spotted', 'tuxedo', 'black', 'white', 'black and white', 'gold or yellow', 'blue', 'grey', 'fawn', 'cream']
-    personalities = ['aggressive', 'playful', 'friendly', 'timid/shy', 'feral', 'rabid']
+    breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt']
+    colors = ['Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
+    patterns = ['Spotted', 'Tuxedo', 'Brindal']
+    personalities = ['Aggressive', 'Playful', 'Friendly', 'Timid/shy', 'Feral', 'Rabid']
 
     if request.method == 'POST':
-        dog_name = request.POST['dog_name']
-        dog_age = request.POST['dog_age']
-        dog_sex = request.POST['dog_sex']
-        dog_breed = request.POST['dog_breed']
-        dog_color = request.POST['dog_color']
-        dog_weight = request.POST['dog_weight']
-        dog_personality = request.POST['dog_personality']
+        dog_name = request.POST['name']
+        dog_age = request.POST['age']
+        dog_sex = request.POST['sex']
+        dog_breed = request.POST['breed']
+        dog_color = request.POST['color']
+        dog_pattern = request.POST['pattern']
+        dog_weight = request.POST['weight']
+        dog_personality = request.POST['personality']
         dog_image = request.FILES['dog_image']
 
-        profile = DogProfile(dog_name=dog_name, dog_age=dog_age, dog_sex=dog_sex, dog_breed=dog_breed, dog_color=dog_color,
-                            dog_weight=dog_weight, dog_personality=dog_personality, dog_image=dog_image, user=request.user)
+        profile = DogProfile(name=dog_name, age=dog_age, sex=dog_sex, breed=dog_breed, color=dog_color, pattern=dog_pattern,
+                             weight=dog_weight, personality=dog_personality, dog_image=dog_image, user=request.user)
         profile.save()
 
         return HttpResponseRedirect(reverse('doggonnitapp:dog_profile', kwargs={'dog_id':profile.id}))
 
-    return render(request, 'doggonnitapp/addDog.html', {'weights': weights, 'breeds': breeds, 'colors': colors, 'personalities': personalities})
+    return render(request, 'doggonnitapp/addDog.html', {'weights': weights, 'breeds': breeds, 'colors': colors,
+                                                        'personalities': personalities, 'patterns':patterns})
+
 
 def success(request):
     return HttpResponse('success')
@@ -80,13 +84,3 @@ def dog_profile(request, dog_id):
     dog = DogProfile.objects.get(pk=dog_id)
     return render(request, 'doggonnitapp/dog_profile.html', {'dog':dog})
 
-# def simple_upload(request):
-#     if request.method == 'POST' and request.FILES['dog_image']:
-#         myfile = request.FILES['dog_image']
-#         fs = FileSystemStorage()
-#         filename = fs.save(dog_image.name, dog_image)
-#         uploaded_file_url = fs.url(filename)
-#         return render(request, 'core/simple_upload.html', {
-#             'uploaded_file_url': uploaded_file_url
-#         })
-#     return render(request, 'core/simple_upload.html')
