@@ -1,25 +1,38 @@
 <head>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet' />
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>
 
 </head>
-<h1>yo dawg, i hear you wanna see a dog map of dogs</h1>
+
 
 <body>
+    <h1>yo dawg, i hear you wanna see a dog map of dogs</h1>
     <div id='map' style='width: 600px; height: 500px;'></div>
     <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoibXNjaGFlZmZlcjUzIiwiYSI6ImNqYjVsM3lnMzM2eGszMnM3M2N2dWxjemQifQ.bDLMlqBvdBe4VHJpky7QbA';
-    let map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v9',
+        mapboxgl.accessToken = 'pk.eyJ1IjoibXNjaGFlZmZlcjUzIiwiYSI6ImNqYjVsM3lnMzM2eGszMnM3M2N2dWxjemQifQ.bDLMlqBvdBe4VHJpky7QbA';
+        let map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v9',
+        });
+        map.addControl(new mapboxgl.GeolocateControl({
+            positionOptions: {
+                enableHighAccuracy: true
+            },
+            trackUserLocation: true
+        }));
 
-    });
-    map.addControl(new mapboxgl.GeolocateControl({
-    positionOptions: {
-        enableHighAccuracy: true
-    },
-    trackUserLocation: true
-}));
+        function new_marker(){
+            let marker = new mapboxgl.Marker()
+                .setLngLat([30.5, 50.5])
+                .addTo(map);
+        }
+
+
+
+        map.on('click', function (e) {
+            alert(e.lngLat);
+        });
+
     </script>
 
 </body>
