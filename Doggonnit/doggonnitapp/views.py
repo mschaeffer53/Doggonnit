@@ -50,6 +50,7 @@ def create_user_profile(request):
     return HttpResponse('new profile created and logged in')
 
 def create_dog_profile(request):
+    ages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     weights = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
     breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt', 'Husky']
     colors = ['Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
@@ -76,7 +77,7 @@ def create_dog_profile(request):
         return HttpResponseRedirect(reverse('doggonnitapp:dog_profile', kwargs={'dog_id':profile.id}))
 
     return render(request, 'doggonnitapp/addDog.html', {'weights': weights, 'breeds': breeds, 'colors': colors,
-                                                        'personalities': personalities, 'patterns':patterns})
+                                                        'personalities': personalities, 'patterns':patterns, 'ages':ages})
 
 
 def success(request):
@@ -90,5 +91,18 @@ def dog_profile(request, dog_id):
     return render(request, 'doggonnitapp/dog_profile.html', {'dog':dog})
 
 def dogmap(request):
-    return render(request, 'doggonnitapp/dogmap.html', {})
+    weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
+    colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White',
+              'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
+    breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt', 'Husky']
+    ages = ['puppy', 'adult', 'really old looking']
+
+    return render(request, 'doggonnitapp/dogmap.html', {'weights': weights, 'breeds': breeds, 'colors': colors,
+                                                        'ages': ages})
+
+def add_marker(request):
+
+
+
+    return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
 

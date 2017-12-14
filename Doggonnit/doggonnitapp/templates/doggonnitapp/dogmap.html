@@ -4,7 +4,11 @@
 
 </head>
 
-
+<style>
+    div{
+        padding-top: 5px;
+    }
+</style>
 <body>
     <h1>yo dawg, i hear you wanna see a dog map of dogs</h1>
     <div id='map' style='width: 600px; height: 500px;'></div>
@@ -35,5 +39,41 @@
 
     </script>
 
-</body>
 
+<div>
+    <form action="{% url 'doggonnitapp:add_marker' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="text" placeholder="label" name="label">
+
+        <select name="age">
+            <option selected disabled> Age </option>
+            {% for age in ages %}
+                <option>{{age}}</option>
+            {% endfor %}
+        </select>
+
+        <select name="weight">
+            <option selected disabled> Weight </option>
+            {% for weight in weights %}
+                <option>{{weight}}</option>
+            {% endfor %}
+        </select>
+
+        <select name="breed">
+            <option selected disabled> Breed </option>
+            {% for breed in breeds %}
+                <option>{{breed}}</option>
+            {% endfor %}
+        </select>
+
+        <select name="color">
+            <option selected disabled> Color </option>
+            {% for color in colors %}
+                <option>{{color}}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit"> Submit </button>
+    </form>
+</div>

@@ -13,7 +13,8 @@ urlpatterns = [
     url(r'^create_user_profile/$', views.create_user_profile, name='create_user_profile'),
     url(r'^create_dog_profile/$', views.create_dog_profile, name='create_dog_profile'),
     url(r'dog_profile/(?P<dog_id>[0-9]+)/', views.dog_profile, name='dog_profile'),
-    url(r'dogmap/$', views.dogmap, name='dogmap')
+    url(r'dogmap/$', views.dogmap, name='dogmap'),
+    url(r'add_marker', views.add_marker, name='add_marker')
 ]
 
 if settings.DEBUG:

@@ -1,10 +1,24 @@
+<style>
+    div{
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+</style>
+
+
 <h1>dog registration page</h1>
 
 <form action="{% url 'doggonnitapp:create_dog_profile' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
-    <input type="text" placeholder="dog name" name="name" required value="fido">
-    <input type="text" placeholder="dog age" name="age" required value="2">
+    <input type="text" placeholder="dog name" name="name" required value="Fido">
+
+    <select name="age" required>
+        <option selected disabled> Age </option>
+        {% for age in ages %}
+            <option>{{age}}</option>
+        {% endfor %}
+    </select>
 
     <select name="sex" required>
         <option selected disabled> Gender </option>
@@ -47,16 +61,20 @@
         {% endfor %}
     </select>
 
-    <textarea name="description" placeholder="describe anything else you want"></textarea>
-
+    <div>
+         <textarea name="description" cols=50 rows= 5 placeholder="describe anything else you want"></textarea>
+    </div>
 
     <input type="file" name="dog_image" accept="image/*" required>
 
-    <button type="submit">Add Dog</button>
+    <div>
+        <button type="submit">Add Dog</button>
+    </div>
+
 
 </form>
 
-<div>*all fields required</div>
+<div>*all fields required (except description)</div>
 
 
 
