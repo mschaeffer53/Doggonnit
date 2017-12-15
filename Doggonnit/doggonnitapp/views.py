@@ -126,6 +126,14 @@ def dogmap(request):
     ages = ['puppy', 'adult', 'really old looking']
 
     dogs = DogProfile.objects.filter(dog_is_lost=True)
+    coordinates = []
+    for dog in dogs:
+        profile = get_object_or_404(UserProfile, user=dog.user)
+        coordinates.append({
+            'lat': profile.latitude,
+            'lng': profile.longitude
+        })
+    print(coordinates)
 
     context = {
         'weights': weights,
@@ -133,6 +141,7 @@ def dogmap(request):
         'colors': colors,
         'ages': ages,
         'dogs': dogs,
+        'coordinates':coordinates,
         'mapbox_api_key': secret.mapbox_api_key
     }
 

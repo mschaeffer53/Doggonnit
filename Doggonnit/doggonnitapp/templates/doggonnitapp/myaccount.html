@@ -2,10 +2,14 @@
     img{
         width:500px;
     }
+    div{
+        font-size:24px;
+    }
 </style>
 <h1>my account</h1>
 
 <h2>My dogs</h2>
+<hr/>
 {% for dog in dogs %}
     <div>{{dog.name.upper}}</div>
     <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />

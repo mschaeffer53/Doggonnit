@@ -52,6 +52,9 @@
         }
 
 
+        {% for coordinate in coordinates %}
+            new_lost_marker({{coordinate.lng}}, {{coordinate.lat}});
+        {% endfor %}
 
 
         map.on('click', function (e) {
