@@ -33,5 +33,13 @@
 
 <form action="{% url 'doggonnitapp:dog_profile' dog.id %}" method="POST">
     {% csrf_token %}
-    <button type="submit"> Report as missing </button>
+    {% if dog.dog_is_lost  %}
+        <button type="submit"> Report as found! </button>
+        {% else %}
+            <button type="submit"> Report as missing </button>
+    {% endif %}
+
+
 </form>
+
+<a href="{% url 'doggonnitapp:dogmap' %}">Skip this and go to dog map</a>

@@ -1,1 +1,17 @@
-<h1> my account</h1>
+<style>
+    img{
+        width:500px;
+    }
+</style>
+<h1>my account</h1>
+
+<h2>My dogs</h2>
+{% for dog in dogs %}
+    <div>{{dog.name.upper}}</div>
+    <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+{% endfor %}
+
+
+
+<h2>My points</h2>
+{{profile.points}}

@@ -149,4 +149,7 @@ def add_marker(request):
 
 
 def myaccount(request):
-    return render(request, 'doggonnitapp/myaccount.html')
+    print(request.user)
+    profile = get_object_or_404(UserProfile, user=request.user)
+    dogs = DogProfile.objects.filter(user=request.user)
+    return render(request, 'doggonnitapp/myaccount.html', {'profile':profile, 'dogs':dogs})
