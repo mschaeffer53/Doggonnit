@@ -75,7 +75,7 @@ def create_user_profile(request):
     profile = UserProfile(user=user, address=address, city=city, state=state, points=points, latitude=lat, longitude=lng)
     profile.save()
     login(request, user)
-    return HttpResponse('new profile created and logged in')
+    return HttpResponseRedirect(reverse('doggonnitapp:create_dog_profile'))
 
 def create_dog_profile(request):
     ages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
@@ -147,3 +147,6 @@ def add_marker(request):
 
     return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
 
+
+def myaccount(request):
+    return render(request, 'doggonnitapp/myaccount.html')

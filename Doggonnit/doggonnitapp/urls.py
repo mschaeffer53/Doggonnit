@@ -14,7 +14,8 @@ urlpatterns = [
     url(r'^create_dog_profile/$', views.create_dog_profile, name='create_dog_profile'),
     url(r'dog_profile/(?P<dog_id>[0-9]+)/', views.dog_profile, name='dog_profile'),
     url(r'dogmap/$', views.dogmap, name='dogmap'),
-    url(r'add_marker', views.add_marker, name='add_marker')
+    url(r'add_marker/$', views.add_marker, name='add_marker'),
+    url(r'myaccount/$', views.myaccount, name='myaccount')
 ]
 
 if settings.DEBUG:
