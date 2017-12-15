@@ -19,6 +19,7 @@ class DogProfile(models.Model):
     description = models.TextField(null=True, blank=True, default=None)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+
     def __str__(self):
         return f'{self.name} {self.age} {self.sex} {self.breed} {self.pattern}' \
                f'{self.color} {self.weight} {self.personality} {self.description} {self.dog_is_lost}'
@@ -30,6 +31,8 @@ class UserProfile(models.Model):
     state = models.CharField(max_length=25)
     points = models.PositiveIntegerField()
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    latitude = models.FloatField()
+    longitude = models.FloatField()
 
     def __str__(self):
         return f'{self.user.username} {self.address} {self.city} {self.state} {self.points}'

@@ -4,11 +4,38 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from django.contrib.auth import authenticate, login, logout
 
+
 from .models import UserProfile, DogProfile
 from django.contrib.auth.models import User, Group
 from django.core.files import File
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+
+
+
+
+
+import json, requests
+from . import secret
+
+def get_latlng(address, city, state):
+    full_address = ', '.join([address, city, state])
+    #print(full_address)
+
+    #url = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD1CWxGv2eS2EqY7t6a4qRLZQ2Aid-HKxY'
+    url = 'https://maps.googleapis.com/maps/api/geocode/json'
+    print(url)
+    params = {
+        'address': full_address,
+        'key':secret.google_api_key
+    }
+
+    resp = requests.get(url=url, params=params)
+    data = json.loads(resp.text)
+    lat = data['results'][0]['geometry']['location']['lat']
+    lng = data['results'][0]['geometry']['location']['lng']
+    return lat, lng
+
 
 # Create your views here.
 
@@ -33,7 +60,6 @@ def mylogin(request):
     else:
         return HttpResponse('invalid credentials')
 
-
 def create_user_profile(request):
     name = request.POST['username']
     password = request.POST['password']
@@ -43,8 +69,10 @@ def create_user_profile(request):
     state = request.POST['state']
     points = 0
 
+    lat, lng = get_latlng(address, city, state)
+
     user = User.objects.create_user(name, email, password)
-    profile = UserProfile(user=user, address=address, city=city, state=state, points=points)
+    profile = UserProfile(user=user, address=address, city=city, state=state, points=points, latitude=lat, longitude=lng)
     profile.save()
     login(request, user)
     return HttpResponse('new profile created and logged in')
@@ -97,11 +125,24 @@ def dogmap(request):
     breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt', 'Husky']
     ages = ['puppy', 'adult', 'really old looking']
 
-    return render(request, 'doggonnitapp/dogmap.html', {'weights': weights, 'breeds': breeds, 'colors': colors,
-                                                        'ages': ages})
+    dogs = DogProfile.objects.filter(dog_is_lost=True)
+
+    context = {
+        'weights': weights,
+        'breeds': breeds,
+        'colors': colors,
+        'ages': ages,
+        'dogs': dogs,
+        'mapbox_api_key': secret.mapbox_api_key
+    }
+
+
+    return render(request, 'doggonnitapp/dogmap.html', context)
+
+
+
 
 def add_marker(request):
-
 
 
     return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))

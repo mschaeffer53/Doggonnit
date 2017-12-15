@@ -8,12 +8,23 @@
     div{
         padding-top: 5px;
     }
+
+    img{
+        width: 250px;
+        height: 250px;
+    }
+
+    .profile_container{
+        display: flex;
+        justify-content: space-between;
+    }
 </style>
+
 <body>
     <h1>yo dawg, i hear you wanna see a dog map of dogs</h1>
     <div id='map' style='width: 600px; height: 500px;'></div>
     <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoibXNjaGFlZmZlcjUzIiwiYSI6ImNqYjVsM3lnMzM2eGszMnM3M2N2dWxjemQifQ.bDLMlqBvdBe4VHJpky7QbA';
+        mapboxgl.accessToken = '{{ mapbox_api_key }}';
         let map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v9',
@@ -25,11 +36,21 @@
             trackUserLocation: true
         }));
 
+
+
+
         function new_marker(){
             let marker = new mapboxgl.Marker()
-                .setLngLat([30.5, 50.5])
+                .setLngLat([-122.66, 45.5])
                 .addTo(map);
         }
+
+        function new_lost_marker(x, y){
+            let marker = new mapboxgl.Marker()
+                .setLngLat([x, y])
+                .addTo(map);
+        }
+
 
 
 
@@ -41,7 +62,7 @@
 
 
 <div>
-    <form action="{% url 'doggonnitapp:add_marker' %}" method="POST" enctype="multipart/form-data">
+    <form action="{% url 'doggonnitapp:add_marker' %}" method="POST">
         {% csrf_token %}
 
         <input type="text" placeholder="label" name="label">
@@ -76,4 +97,31 @@
 
         <button type="submit"> Submit </button>
     </form>
+</div>
+
+<hr/>
+
+<div class="profile_container">
+    {% for dog in dogs%}
+        <div class="dogs">
+            <h1>**MISSING**</h1>
+
+            <h3> {{ dog.name.upper }} </h3>
+
+            <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+
+            <div class="info_container">
+
+                <div> Age : {{dog.age}} </div>
+                <div> Gender : {{dog.sex}} </div>
+                <div> Breed : {{dog.breed}} </div>
+                <div> Color : {{dog.color}} </div>
+                <div> Pattern : {{dog.pattern}} </div>
+                <div> Weight : {{dog.weight}} lbs </div>
+                <div> Personality : {{dog.personality}} </div>
+                <div> Description : {{dog.description}} </div>
+
+            </div>
+        </div>
+    {% endfor %}
 </div>
