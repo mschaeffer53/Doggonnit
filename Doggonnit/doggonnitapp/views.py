@@ -80,10 +80,20 @@ def create_user_profile(request):
 def create_dog_profile(request):
     ages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     weights = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
-    breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt', 'Husky']
+    breeds = ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Beagle',
+              'Poodle', 'Rottweiler', 'Boxer', 'Pointer', 'Yorkshire Terrier', 'French Bulldog', 'Siberian Husky',
+              'Great Dane', 'Doberman', 'Aussie Shepherd', 'Schnauzer', 'Corgi', 'Shih Tzu', 'Pomeranian',
+              'Sheepdog', 'Snoop Dogg', 'Cocker Spaniel', 'Bernese Mountain Dog', 'Mastiff', 'Chihuahua', 'Pug', 'Maltese',
+              'Newfoundland', 'Collie', 'Basset Hound', 'Akita', 'St. Bernard', 'Bloodhound', 'Whippet', 'Chow Chow',
+              'Bull Terrier', 'Pit Bull', 'Greyhound', 'Aussie Cattle Dog', 'Dachshund', 'English Bulldog',
+              'Jack Russel Terrier', 'Staffordshire Bull Terrier', 'Wheaton Terrier', 'Malamute']
     colors = ['Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
-    patterns = ['Spotted', 'Tuxedo', 'Brindle', 'Harlequin', 'Tricolor', 'Black and Tan']
+    patterns = ['Single-color', 'Spotted', 'Tuxedo', 'Brindle', 'Harlequin', 'Tricolor', 'Black and Tan', 'Two-color']
     personalities = ['Aggressive', 'Playful', 'Friendly', 'Timid/shy', 'Fear-based', 'Feral', 'Rabid']
+    breeds = sorted(breeds)
+    colors = sorted(colors)
+    patterns = sorted(patterns)
+    personalities = sorted(personalities)
 
     if request.method == 'POST':
         dog_name = request.POST['name']
