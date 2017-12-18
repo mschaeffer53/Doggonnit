@@ -18,6 +18,15 @@
         display: flex;
         justify-content: space-between;
     }
+
+
+    .marker {
+        display: block;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 0;
+    }
 </style>
 
 <body>
@@ -43,11 +52,6 @@
         let nav = new mapboxgl.NavigationControl();
         map.addControl(nav, 'top-left');
 
-//        function new_marker(){
-//            let marker = new mapboxgl.Marker()
-//                .setLngLat([-122.66, 45.5])
-//                .addTo(map);
-//        }
 
         function new_lost_marker(x, y){
             let marker = new mapboxgl.Marker()
@@ -57,12 +61,17 @@
 
 //      add markers for missing dogs to map
         {% for coordinate in coordinates %}
+
             new_lost_marker({{coordinate.lng}}, {{coordinate.lat}});
+
+
         {% endfor %}
 
 
         map.on('click', function (e) {
-            alert(e.lngLat);
+            let lat = e.lngLat.lat;
+            let lng = e.lngLat.lng;
+            new_lost_marker(lng, lat)
         });
 
     </script>

@@ -129,12 +129,14 @@ def success(request):
 
 def dog_profile(request, dog_id):
     dog = DogProfile.objects.get(pk=dog_id)
+    profile = get_object_or_404(UserProfile, user=dog.user)
     if request.method == 'POST':
         dog.dog_is_lost = not dog.dog_is_lost
         dog.save()
 
     context = {'dog':dog,
-               'mapbox_api_key': secret.mapbox_api_key}
+               'mapbox_api_key': secret.mapbox_api_key,
+               'profile':profile}
 
 
     return render(request, 'doggonnitapp/dog_profile.html', context)
