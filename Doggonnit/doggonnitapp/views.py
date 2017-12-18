@@ -128,10 +128,10 @@ def dog_profile(request, dog_id):
         dog.save()
     return render(request, 'doggonnitapp/dog_profile.html', {'dog':dog})
 
+
 def dogmap(request):
     weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
-    colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White',
-              'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
+    colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
     breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt', 'Husky']
     ages = ['puppy', 'adult', 'really old looking']
 
@@ -162,8 +162,6 @@ def dogmap(request):
 
 
 def add_marker(request):
-
-
     return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
 
 
@@ -172,3 +170,9 @@ def myaccount(request):
     profile = get_object_or_404(UserProfile, user=request.user)
     dogs = DogProfile.objects.filter(user=request.user)
     return render(request, 'doggonnitapp/myaccount.html', {'profile':profile, 'dogs':dogs})
+
+def singledogmap(request):
+
+
+    return render(request, 'doggonnitapp/singledogmap.html', {})
+    #return HttpResponseRedirect(reverse('doggonnitapp:singledogmap'))

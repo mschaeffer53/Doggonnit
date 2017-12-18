@@ -28,6 +28,8 @@
         let map = new mapboxgl.Map({
             container: 'map',
             style: 'mapbox://styles/mapbox/streets-v9',
+            center: [-122.667, 45.523],
+            zoom: 10
         });
         map.addControl(new mapboxgl.GeolocateControl({
             positionOptions: {
@@ -36,9 +38,10 @@
             trackUserLocation: true
         }));
 
+        map.addControl(new mapboxgl.FullscreenControl());
 
-
-
+        let nav = new mapboxgl.NavigationControl();
+        map.addControl(nav, 'top-left');
 
 //        function new_marker(){
 //            let marker = new mapboxgl.Marker()
@@ -65,67 +68,77 @@
     </script>
 
 
-<div>
-    <form action="{% url 'doggonnitapp:add_marker' %}" method="POST">
-        {% csrf_token %}
+    <div>
+        <form action="{% url 'doggonnitapp:add_marker' %}" method="POST">
+            {% csrf_token %}
 
-        <input type="text" placeholder="label" name="label">
+            <input type="text" placeholder="label" name="label">
 
-        <select name="age">
-            <option selected disabled> Age </option>
-            {% for age in ages %}
-                <option>{{age}}</option>
-            {% endfor %}
-        </select>
+            <select name="age">
+                <option selected disabled> Age </option>
+                {% for age in ages %}
+                    <option>{{age}}</option>
+                {% endfor %}
+            </select>
 
-        <select name="weight">
-            <option selected disabled> Weight </option>
-            {% for weight in weights %}
-                <option>{{weight}}</option>
-            {% endfor %}
-        </select>
+            <select name="weight">
+                <option selected disabled> Weight </option>
+                {% for weight in weights %}
+                    <option>{{weight}}</option>
+                {% endfor %}
+            </select>
 
-        <select name="breed">
-            <option selected disabled> Breed </option>
-            {% for breed in breeds %}
-                <option>{{breed}}</option>
-            {% endfor %}
-        </select>
+            <select name="breed">
+                <option selected disabled> Breed </option>
+                {% for breed in breeds %}
+                    <option>{{breed}}</option>
+                {% endfor %}
+            </select>
 
-        <select name="color">
-            <option selected disabled> Color </option>
-            {% for color in colors %}
-                <option>{{color}}</option>
-            {% endfor %}
-        </select>
+            <select name="color">
+                <option selected disabled> Color </option>
+                {% for color in colors %}
+                    <option>{{color}}</option>
+                {% endfor %}
+            </select>
 
-        <button type="submit"> Submit </button>
-    </form>
-</div>
+            <button type="submit"> Submit </button>
+        </form>
+    </div>
 
-<hr/>
+    <hr/>
 
-<div class="profile_container">
-    {% for dog in dogs%}
-        <div class="dogs">
-            <h1>**MISSING**</h1>
+    <div class="profile_container">
+        {% for dog in dogs%}
+            <div class="dogs">
+                <h1>**MISSING**</h1>
 
-            <h3> {{ dog.name.upper }} </h3>
+                <h3> {{ dog.name.upper }} </h3>
 
-            <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+                <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
 
-            <div class="info_container">
+                <div class="info_container">
+                    <form action="{% url 'doggonnitapp:singledogmap' %}" method="POST">
+                        {% csrf_token %}
 
-                <div> Age : {{dog.age}} </div>
-                <div> Gender : {{dog.sex}} </div>
-                <div> Breed : {{dog.breed}} </div>
-                <div> Color : {{dog.color}} </div>
-                <div> Pattern : {{dog.pattern}} </div>
-                <div> Weight : {{dog.weight}} lbs </div>
-                <div> Personality : {{dog.personality}} </div>
-                <div> Description : {{dog.description}} </div>
 
+                        <button type="submit">Find {{dog.name}}</button>
+                    </form>
+
+
+                    <div> Age : {{dog.age}} </div>
+                    <div> Gender : {{dog.sex}} </div>
+                    <div> Breed : {{dog.breed}} </div>
+                    <div> Color : {{dog.color}} </div>
+                    <div> Pattern : {{dog.pattern}} </div>
+                    <div> Weight : {{dog.weight}} lbs </div>
+                    <div> Personality : {{dog.personality}} </div>
+                    <div> Description : {{dog.description}} </div>
+
+
+                </div>
             </div>
-        </div>
-    {% endfor %}
-</div>
+        {% endfor %}
+    </div>
+
+</body>
