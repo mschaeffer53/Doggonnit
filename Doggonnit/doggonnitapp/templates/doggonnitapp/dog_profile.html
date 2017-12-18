@@ -1,45 +1,88 @@
+<head>
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>
+</head>
+
+
 <style>
-    img {
+    .container img {
         width:150px;
         padding-bottom: 5px;
     }
 
-    h3{
+    .container h3{
         color:lightseagreen;
         font-size: 24px;
     }
+
 </style>
 
-{% if dog.dog_is_lost  %}
-    <h1>**MISSING**</h1>
-{% endif %}
+<body>
 
-<h3> {{ dog.name.upper }} </h3>
+    <div class="container">
+        {% if dog.dog_is_lost  %}
+            <h1>**MISSING**</h1>
+        {% endif %}
 
-<img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+        <h3> {{ dog.name.upper }} </h3>
 
-<div class="container">
+        <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
 
-    <div> Age : {{dog.age}} </div>
-    <div> Gender : {{dog.sex}} </div>
-    <div> Breed : {{dog.breed}} </div>
-    <div> Color : {{dog.color}} </div>
-    <div> Pattern : {{dog.pattern}} </div>
-    <div> Weight : {{dog.weight}} lbs </div>
-    <div> Personality : {{dog.personality}} </div>
-    <div> Description : {{dog.description}} </div>
+        <div class="container">
+            <div> Age : {{dog.age}} </div>
+            <div> Gender : {{dog.sex}} </div>
+            <div> Breed : {{dog.breed}} </div>
+            <div> Color : {{dog.color}} </div>
+            <div> Pattern : {{dog.pattern}} </div>
+            <div> Weight : {{dog.weight}} lbs </div>
+            <div> Personality : {{dog.personality}} </div>
+            <div> Description : {{dog.description}} </div>
+        </div>
 
-</div>
+        <form action="{% url 'doggonnitapp:dog_profile' dog.id %}" method="POST">
+            {% csrf_token %}
+            {% if dog.dog_is_lost  %}
+                <button type="submit"> Report as found! </button>
+                {% else %}
+                    <button type="submit"> Report as missing </button>
+            {% endif %}
+        </form>
+    </div>
 
-<form action="{% url 'doggonnitapp:dog_profile' dog.id %}" method="POST">
-    {% csrf_token %}
-    {% if dog.dog_is_lost  %}
-        <button type="submit"> Report as found! </button>
-        {% else %}
-            <button type="submit"> Report as missing </button>
+    {% if dog.dog_is_lost %}
+        <div id='map' style='width: 600px; height: 500px;'></div>
+
+        <script>
+            mapboxgl.accessToken = '{{ mapbox_api_key }}';
+            let map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v9',
+            });
+
+            map.addControl(new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                    },
+                    trackUserLocation: true
+            }));
+
+            map.addControl(new mapboxgl.FullscreenControl());
+
+            let nav = new mapboxgl.NavigationControl();
+            map.addControl(nav, 'top-left');
+
+            function new_lost_marker(x, y){
+                let marker = new mapboxgl.Marker()
+                    .setLngLat([x, y])
+                    .addTo(map);
+            }
+
+
+
+
+        </script>
     {% endif %}
 
+    <a href="{% url 'doggonnitapp:dogmap' %}">Go to map of all missing dogs</a>
 
-</form>
-
-<a href="{% url 'doggonnitapp:dogmap' %}">Skip this and go to dog map</a>
+</body>

@@ -21,7 +21,7 @@
 </style>
 
 <body>
-    <h1>yo dawg, i hear you wanna see a dog map of dogs</h1>
+    <h1>yo dawg, i hear you wanna see a dog map of missing dogs</h1>
     <div id='map' style='width: 600px; height: 500px;'></div>
     <script>
         mapboxgl.accessToken = '{{ mapbox_api_key }}';
@@ -118,14 +118,7 @@
                 <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
 
                 <div class="info_container">
-                    <form action="{% url 'doggonnitapp:singledogmap' %}" method="POST">
-                        {% csrf_token %}
-
-
-                        <button type="submit">Find {{dog.name}}</button>
-                    </form>
-
-
+                    <a href="{% url 'doggonnitapp:dog_profile' dog.id %}">Find {{dog.name}}</a>
                     <div> Age : {{dog.age}} </div>
                     <div> Gender : {{dog.sex}} </div>
                     <div> Breed : {{dog.breed}} </div>

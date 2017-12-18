@@ -95,6 +95,13 @@ def create_dog_profile(request):
     patterns = sorted(patterns)
     personalities = sorted(personalities)
 
+    context = {'weights': weights,
+               'breeds': breeds,
+               'colors': colors,
+                'personalities': personalities,
+               'patterns':patterns,
+               'ages':ages}
+
     if request.method == 'POST':
         dog_name = request.POST['name']
         dog_age = request.POST['age']
@@ -114,8 +121,7 @@ def create_dog_profile(request):
 
         return HttpResponseRedirect(reverse('doggonnitapp:dog_profile', kwargs={'dog_id':profile.id}))
 
-    return render(request, 'doggonnitapp/addDog.html', {'weights': weights, 'breeds': breeds, 'colors': colors,
-                                                        'personalities': personalities, 'patterns':patterns, 'ages':ages})
+    return render(request, 'doggonnitapp/addDog.html', context)
 
 
 def success(request):
@@ -126,7 +132,12 @@ def dog_profile(request, dog_id):
     if request.method == 'POST':
         dog.dog_is_lost = not dog.dog_is_lost
         dog.save()
-    return render(request, 'doggonnitapp/dog_profile.html', {'dog':dog})
+
+    context = {'dog':dog,
+               'mapbox_api_key': secret.mapbox_api_key}
+
+
+    return render(request, 'doggonnitapp/dog_profile.html', context)
 
 
 def dogmap(request):
@@ -160,7 +171,6 @@ def dogmap(request):
 
 
 
-
 def add_marker(request):
     return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
 
@@ -171,8 +181,3 @@ def myaccount(request):
     dogs = DogProfile.objects.filter(user=request.user)
     return render(request, 'doggonnitapp/myaccount.html', {'profile':profile, 'dogs':dogs})
 
-def singledogmap(request):
-
-
-    return render(request, 'doggonnitapp/singledogmap.html', {})
-    #return HttpResponseRedirect(reverse('doggonnitapp:singledogmap'))
