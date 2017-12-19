@@ -57,19 +57,12 @@
             document.getElementById('lng').value = lng;
         });
 
-//attempt to remove markers, doesnt work
-        function remove_marker(marker){
-            if(marker !== undefined){
+//remove marker if a previous one exists
+        function remove_marker(marker) {
+            if (marker !== undefined) {
                 marker.remove();
             }
-
-//            console.log(marker);
-//            map.removeLayer(marker)
-        }
-
-
-//        map.on('click', remove_markers(marker_array))
-
+        };
 
     </script>
 

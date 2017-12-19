@@ -39,7 +39,7 @@ class UserProfile(models.Model):
 
 
 class MissingDogReport(models.Model):
-    timestamp = models.DateTimeField(auto_created=True)
+    timestamp = models.DateTimeField(default=timezone.now)
     lat = models.FloatField()
     long = models.FloatField()
     description = models.TextField(default='')

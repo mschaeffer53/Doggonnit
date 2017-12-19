@@ -89,7 +89,7 @@
 
             //create new marker for missing dog's home
             function new_lost_marker(x, y){
-                let marker = new mapboxgl.Marker()
+                return new mapboxgl.Marker()
                     .setLngLat([x, y])
                     .addTo(map);
             }
@@ -106,12 +106,32 @@
     <a href="{% url 'doggonnitapp:dogmap' %}">Go to map of all missing dogs</a>
 
     <script>
+        //add markers on click
+        let marker;
         map.on('click', function (e) {
             let lat = e.lngLat.lat;
             let lng = e.lngLat.lng;
-            new_lost_marker(lng, lat)
+            remove_marker(marker);
+            marker = new_lost_marker(lng, lat);
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
         });
+
+        //remove marker if a previous one exists currently not working
+        function remove_marker(marker) {
+            if (marker !== undefined) {
+                marker.remove();
+            }
+        };
     </script>
 
+    <form>
+        <!--submit the marker with everything in dog profile as default-->
 
+
+        <input type="hidden" name="lat" id="lat">
+        <input type="hidden" name="lng" id="lng">
+
+        <button type="submit">I saw this dog!</button>
+    </form>
 </body>

@@ -217,11 +217,13 @@ def isawadog(request):
         weight = request.POST['weight']
         breed = request.POST['breed']
         color = request.POST['color']
+        description = request.POST['description']
         lat = request.POST['lat']
         lng = request.POST['lng']
         lat = float(lat)
         lng = float(lng)
-        missing_dog_report = MissingDogReport(age=age, weight=weight, breed=breed, color=color, lat=lat, long=lng)
+        missing_dog_report = MissingDogReport(age=age, weight=weight, breed=breed, color=color, description=description,
+                                              lat=lat, long=lng)
         missing_dog_report.save()
 
     return render(request, 'doggonnitapp/isawadog.html', context)
