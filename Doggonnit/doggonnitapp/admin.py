@@ -5,6 +5,6 @@ from . import models
 
 admin.site.register(models.UserProfile)
 admin.site.register(models.DogProfile)
-admin.site.register(models.Marker)
+admin.site.register(models.MissingDogReport)
 
 

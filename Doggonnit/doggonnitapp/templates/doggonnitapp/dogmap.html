@@ -19,6 +19,9 @@
         justify-content: space-between;
     }
 
+    a{
+        font-size: 24px;
+    }
 
     .marker {
         display: block;
@@ -30,7 +33,8 @@
 </style>
 
 <body>
-    <h1>yo dawg, i hear you wanna see a dog map of missing dogs</h1>
+    <h1>Dogs reported missing</h1>
+    <h2>If you have seen this dog click on the 'find' link</h2>
     <div id='map' style='width: 600px; height: 500px;'></div>
     <script>
         mapboxgl.accessToken = '{{ mapbox_api_key }}';
@@ -68,52 +72,16 @@
         {% endfor %}
 
 
-        map.on('click', function (e) {
-            let lat = e.lngLat.lat;
-            let lng = e.lngLat.lng;
-            new_lost_marker(lng, lat)
-        });
+//        map.on('click', function (e) {
+//            let lat = e.lngLat.lat;
+//            let lng = e.lngLat.lng;
+//            new_lost_marker(lng, lat)
+//        });
 
     </script>
 
 
-    <div>
-        <form action="{% url 'doggonnitapp:add_marker' %}" method="POST">
-            {% csrf_token %}
 
-            <input type="text" placeholder="label" name="label">
-
-            <select name="age">
-                <option selected disabled> Age </option>
-                {% for age in ages %}
-                    <option>{{age}}</option>
-                {% endfor %}
-            </select>
-
-            <select name="weight">
-                <option selected disabled> Weight </option>
-                {% for weight in weights %}
-                    <option>{{weight}}</option>
-                {% endfor %}
-            </select>
-
-            <select name="breed">
-                <option selected disabled> Breed </option>
-                {% for breed in breeds %}
-                    <option>{{breed}}</option>
-                {% endfor %}
-            </select>
-
-            <select name="color">
-                <option selected disabled> Color </option>
-                {% for color in colors %}
-                    <option>{{color}}</option>
-                {% endfor %}
-            </select>
-
-            <button type="submit"> Submit </button>
-        </form>
-    </div>
 
     <hr/>
 
@@ -121,13 +89,13 @@
         {% for dog in dogs%}
             <div class="dogs">
                 <h1>**MISSING**</h1>
-
-                <h3> {{ dog.name.upper }} </h3>
+                <a href="{% url 'doggonnitapp:dog_profile' dog.id %}">Find {{dog.name.upper}}</a>
+                <!--<h3> {{ dog.name.upper }} </h3>-->
 
                 <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
 
                 <div class="info_container">
-                    <a href="{% url 'doggonnitapp:dog_profile' dog.id %}">Find {{dog.name}}</a>
+
                     <div> Age : {{dog.age}} </div>
                     <div> Gender : {{dog.sex}} </div>
                     <div> Breed : {{dog.breed}} </div>
@@ -136,7 +104,6 @@
                     <div> Weight : {{dog.weight}} lbs </div>
                     <div> Personality : {{dog.personality}} </div>
                     <div> Description : {{dog.description}} </div>
-
 
                 </div>
             </div>

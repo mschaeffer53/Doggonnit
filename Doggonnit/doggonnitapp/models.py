@@ -16,7 +16,7 @@ class DogProfile(models.Model):
     personality = models.CharField(max_length=25)
     dog_is_lost = models.BooleanField(default=False)
     dog_image = models.ImageField()
-    description = models.TextField(null=True, blank=True, default=None)
+    description = models.TextField(default='')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
@@ -37,16 +37,20 @@ class UserProfile(models.Model):
     def __str__(self):
         return f'{self.user.username} {self.address} {self.city} {self.state} {self.points}'
 
-class Marker(models.Model):
+
+class MissingDogReport(models.Model):
     label = models.CharField(max_length=25)
     lat = models.FloatField()
     long = models.FloatField()
-    description = models.TextField(null=True, blank=True, default=None)
-    dog = models.ForeignKey(DogProfile, on_delete=models.CASCADE, null=True, blank=True, default=None)
+    description = models.TextField(default='')
     weight = models.CharField(max_length=25)
     age = models.CharField(max_length=25)
     color = models.CharField(max_length=25)
     breed = models.CharField(max_length=50)
+    dog = models.ForeignKey(DogProfile, on_delete=models.CASCADE, null=True, blank=True, default=None)
 
     def __str__(self):
         return f'{self.dog.name} {self.label} {self.description} {self.weight} {self.age} {self.color} {self.breed}'
+
+
+

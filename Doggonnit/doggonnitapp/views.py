@@ -172,9 +172,12 @@ def dogmap(request):
     return render(request, 'doggonnitapp/dogmap.html', context)
 
 
-
+#
 def add_marker(request):
-    return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
+
+
+    return HttpResponse('markers added')
+    # return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
 
 
 def myaccount(request):
@@ -183,3 +186,30 @@ def myaccount(request):
     dogs = DogProfile.objects.filter(user=request.user)
     return render(request, 'doggonnitapp/myaccount.html', {'profile':profile, 'dogs':dogs})
 
+def isawadog(request):
+    weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
+    colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey']
+    breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt', 'Husky']
+    ages = ['puppy', 'adult', 'really old looking']
+
+    dogs = DogProfile.objects.filter(dog_is_lost=True)
+    coordinates = []
+    for dog in dogs:
+        profile = get_object_or_404(UserProfile, user=dog.user)
+        coordinates.append({
+            'lat': profile.latitude,
+            'lng': profile.longitude
+        })
+    print(coordinates)
+
+    context = {
+        'weights': weights,
+        'breeds': breeds,
+        'colors': colors,
+        'ages': ages,
+        'dogs': dogs,
+        'coordinates':coordinates,
+        'mapbox_api_key': secret.mapbox_api_key
+    }
+
+    return render(request, 'doggonnitapp/isawadog.html', context)
