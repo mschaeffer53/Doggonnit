@@ -41,25 +41,30 @@
 
 
         function new_lost_marker(x, y){
-            let marker = new mapboxgl.Marker()
+            return new mapboxgl.Marker()
                 .setLngLat([x, y])
                 .addTo(map);
         }
 
 //add markers on click
-        marker_array = []
+        let marker;
         map.on('click', function (e) {
             let lat = e.lngLat.lat;
             let lng = e.lngLat.lng;
-            let marker = new_lost_marker(lng, lat)
-            marker_array.push(marker)
+            remove_marker(marker);
+            marker = new_lost_marker(lng, lat);
+            document.getElementById('lat').value = lat;
+            document.getElementById('lng').value = lng;
         });
 
 //attempt to remove markers, doesnt work
-        function remove_markers(marker_array){
-            for (marker in marker_array){
-                map.removeLayer(marker)
+        function remove_marker(marker){
+            if(marker !== undefined){
+                marker.remove();
             }
+
+//            console.log(marker);
+//            map.removeLayer(marker)
         }
 
 
@@ -75,6 +80,7 @@
         {% csrf_token %}
 
         <div>
+
             <select name="age">
                 <option selected disabled> Age </option>
                 {% for age in ages %}
@@ -102,10 +108,16 @@
                     <option>{{color}}</option>
                 {% endfor %}
             </select>
+
+            <input type="hidden" name="lat" id="lat">
+            <input type="hidden" name="lng" id="lng">
+
         </div>
+
         <div>
             <textarea rows="5" cols="75" placeholder="description" name="description"></textarea>
         </div>
+
         <button type="submit"> Submit </button>
     </form>
 </div>

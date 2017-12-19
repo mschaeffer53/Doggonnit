@@ -39,7 +39,7 @@ class UserProfile(models.Model):
 
 
 class MissingDogReport(models.Model):
-    label = models.CharField(max_length=25)
+    timestamp = models.DateTimeField(auto_created=True)
     lat = models.FloatField()
     long = models.FloatField()
     description = models.TextField(default='')
@@ -50,7 +50,10 @@ class MissingDogReport(models.Model):
     dog = models.ForeignKey(DogProfile, on_delete=models.CASCADE, null=True, blank=True, default=None)
 
     def __str__(self):
-        return f'{self.dog.name} {self.label} {self.description} {self.weight} {self.age} {self.color} {self.breed}'
+        if self.dog:
+            return f'{self.dog.name} {self.timestamp} {self.description} {self.weight} {self.age} {self.color} {self.breed}'
+        else:
+            return f'{self.timestamp} {self.description} {self.weight} {self.age} {self.color} {self.breed}'
 
 
 

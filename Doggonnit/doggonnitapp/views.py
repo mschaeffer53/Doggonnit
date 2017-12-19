@@ -5,7 +5,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 
 
-from .models import UserProfile, DogProfile
+from .models import UserProfile, DogProfile, MissingDogReport
 from django.contrib.auth.models import User, Group
 from django.core.files import File
 from django.core.files.storage import FileSystemStorage
@@ -211,5 +211,17 @@ def isawadog(request):
         'coordinates':coordinates,
         'mapbox_api_key': secret.mapbox_api_key
     }
+
+    if request.method == 'POST':
+        age = request.POST['age']
+        weight = request.POST['weight']
+        breed = request.POST['breed']
+        color = request.POST['color']
+        lat = request.POST['lat']
+        lng = request.POST['lng']
+        lat = float(lat)
+        lng = float(lng)
+        missing_dog_report = MissingDogReport(age=age, weight=weight, breed=breed, color=color, lat=lat, long=lng)
+        missing_dog_report.save()
 
     return render(request, 'doggonnitapp/isawadog.html', context)
