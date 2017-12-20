@@ -271,7 +271,7 @@ def dogprofilemap(request, dog_id):
     return JsonResponse({'dog_markers':dog_markers})
 
 
-#map of dogs from isawadog
+#map of dogs from isawadog (unknown missing dogs)
 def unknowndogmap(request):
 
     markers = MissingDogReport.objects.filter(dog=None)
