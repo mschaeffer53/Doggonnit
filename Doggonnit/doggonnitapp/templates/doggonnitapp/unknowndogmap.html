@@ -51,17 +51,29 @@
 
         {% for marker in markers %}
             {% if marker.description != '' %};
-            new_lost_marker({{marker.long}}, {{marker.lat}}, 'MISSING', "Description: {{marker.description}}", "Color: {{marker.color}}");
+            new_lost_marker({{marker.long}}, {{marker.lat}}, 'MISSING DOG', "Description: {{marker.description}}", "Color: {{marker.color}}");
+
+
             {% else %}
-            new_lost_marker({{marker.long}}, {{marker.lat}});
+            new_lost_marker({{marker.long}}, {{marker.lat}}, 'MISSING DOG', "Description: None", "Color: {{marker.color}}");
+
+
             {% endif %}
         {% endfor %}
-
 
     </script>
 
     <a href="{% url 'doggonnitapp:isawadog' %}">Add a dog you saw to this map</a>
 
+    <script>
+        let profile = document.getElementById('profile_div');
+        let container = document.getElementById('container');
+        container.innerHTML(profile)
+
+    </script>
+    <div class="container">
+
+    </div>
 </body>
 
 
