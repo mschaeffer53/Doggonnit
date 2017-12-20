@@ -122,12 +122,25 @@
             if (marker !== undefined) {
                 marker.remove();
             }
-        };
+        }
+//        let markers = JSON.parse("{{ dog_markers }}".replace(/&quot;/g, '\"'));
+//        for (let i=0; i<markers.length; ++i) {
+//            new_lost_marker(markers[i].lng, markers[i].lat)
+//        }
+
+
+        {% for dog_marker in dog.missingdogreport_set.all %}
+        new_lost_marker({{dog_marker.long}}, {{dog_marker.lat}});
+        {% endfor %}
+
     </script>
 
-    <form>
-        <!--submit the marker with everything in dog profile as default-->
+    <form action="{% url 'doggonnitapp:irecognizethatdog' dog.pk %}" method="POST">
+        {% csrf_token %}
 
+        <div>
+            <textarea rows="5" cols="75" placeholder="description/bonus details" name="description"></textarea>
+        </div>
 
         <input type="hidden" name="lat" id="lat">
         <input type="hidden" name="lng" id="lng">

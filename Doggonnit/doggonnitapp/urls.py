@@ -16,7 +16,10 @@ urlpatterns = [
     url(r'^dogmap/$', views.dogmap, name='dogmap'),
     url(r'^add_marker/$', views.add_marker, name='add_marker'),
     url(r'^myaccount/$', views.myaccount, name='myaccount'),
-    url(r'^isawadog/$', views.isawadog, name='isawadog')
+    url(r'^isawadog/$', views.isawadog, name='isawadog'),
+    url(r'^irecognizethatdog/(?P<dog_id>[0-9]+)/$', views.irecognizethatdog, name='irecognizethatdog'),
+    url(r'^test_json/$', views.test, name='test'),
+    url(r'^dogprofilemap/(?P<dog_id>[0-9]+)/$', views.dogprofilemap, name='dogprofilemap')
 ]
 
 if settings.DEBUG:

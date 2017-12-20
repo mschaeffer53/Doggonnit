@@ -1,6 +1,6 @@
 
-from django.shortcuts import render, reverse, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, reverse, get_object_or_404, redirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 
 from django.contrib.auth import authenticate, login, logout
 
@@ -13,6 +13,8 @@ from django.conf import settings
 
 
 
+def test(request):
+    return JsonResponse({chr(i + 96) : i for i in range(26)})
 
 
 import json, requests
@@ -124,9 +126,8 @@ def create_dog_profile(request):
     return render(request, 'doggonnitapp/addDog.html', context)
 
 
-def success(request):
-    return HttpResponse('success')
 
+# the information for a single missing dog
 def dog_profile(request, dog_id):
     dog = DogProfile.objects.get(pk=dog_id)
     profile = get_object_or_404(UserProfile, user=dog.user)
@@ -134,14 +135,24 @@ def dog_profile(request, dog_id):
         dog.dog_is_lost = not dog.dog_is_lost
         dog.save()
 
+
+    dog_markers = []
+    for dog_report in dog.missingdogreport_set.all():
+        dog_markers.append({
+            'lat':dog_report.lat,
+            'lng':dog_report.long
+        })
+
     context = {'dog':dog,
                'mapbox_api_key': secret.mapbox_api_key,
-               'profile':profile}
+               'profile':profile,
+               'dog_markers': json.dumps(dog_markers)}
 
 
     return render(request, 'doggonnitapp/dog_profile.html', context)
 
 
+# a map of all the missing dogs
 def dogmap(request):
     weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
     colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
@@ -227,3 +238,39 @@ def isawadog(request):
         missing_dog_report.save()
 
     return render(request, 'doggonnitapp/isawadog.html', context)
+
+def irecognizethatdog(request, dog_id):
+    if request.method != 'POST':
+        return HttpResponse(status=405)
+
+    dog = DogProfile.objects.get(pk=dog_id)
+
+    missing_dog_report = MissingDogReport(
+        dog=dog,
+        age=dog.age,
+        weight=dog.weight,
+        breed=dog.breed,
+        color=dog.color,
+        description=request.POST['description'],
+        lat=float(request.POST['lat']),
+        long=float(request.POST['lng']),
+    )
+    missing_dog_report.save()
+
+    return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
+
+# TODO:
+# Create a view that takes a dog_id as an argument
+# Goto the db and find all missingdogreports with that dog_id
+# Return a JSON list back to the client
+
+def dogprofilemap(request, dog_id):
+    dog = DogProfile.objects.get(pk=dog_id)
+    dog_markers = []
+    for dog_report in dog.missingdogreport_set.all():
+        dog_markers.append({
+            'lat':dog_report.lat,
+            'lng':dog_report.long
+        })
+    return JsonResponse({'dog_markers':dog_markers})
+
