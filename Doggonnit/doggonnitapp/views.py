@@ -12,7 +12,7 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
 
-
+#example of json
 def test(request):
     return JsonResponse({chr(i + 96) : i for i in range(26)})
 
@@ -52,6 +52,7 @@ def registrationPage(request):
           "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"]
     return render(request, 'doggonnitapp/registrationPage.html', {'states': states})
 
+#log in
 def mylogin(request):
     username = request.POST['user_name']
     password = request.POST['password']
@@ -62,6 +63,7 @@ def mylogin(request):
     else:
         return HttpResponse('invalid credentials')
 
+#create new user
 def create_user_profile(request):
     name = request.POST['username']
     password = request.POST['password']
@@ -79,6 +81,7 @@ def create_user_profile(request):
     login(request, user)
     return HttpResponseRedirect(reverse('doggonnitapp:create_dog_profile'))
 
+#add new dog to user profile
 def create_dog_profile(request):
     ages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     weights = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
@@ -135,24 +138,15 @@ def dog_profile(request, dog_id):
         dog.dog_is_lost = not dog.dog_is_lost
         dog.save()
 
-
-    dog_markers = []
-    for dog_report in dog.missingdogreport_set.all():
-        dog_markers.append({
-            'lat':dog_report.lat,
-            'lng':dog_report.long
-        })
-
     context = {'dog':dog,
                'mapbox_api_key': secret.mapbox_api_key,
-               'profile':profile,
-               'dog_markers': json.dumps(dog_markers)}
+               'profile':profile}
 
 
     return render(request, 'doggonnitapp/dog_profile.html', context)
 
 
-# a map of all the missing dogs
+# a map of all the owner reported missing dogs
 def dogmap(request):
     weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
     colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
@@ -183,20 +177,19 @@ def dogmap(request):
     return render(request, 'doggonnitapp/dogmap.html', context)
 
 
-#
+#problable wont use this
 def add_marker(request):
-
-
     return HttpResponse('markers added')
     # return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
 
-
+#account details
 def myaccount(request):
     print(request.user)
     profile = get_object_or_404(UserProfile, user=request.user)
     dogs = DogProfile.objects.filter(user=request.user)
     return render(request, 'doggonnitapp/myaccount.html', {'profile':profile, 'dogs':dogs})
 
+#add marker when you saw an unknown dog
 def isawadog(request):
     weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
     colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey']
@@ -239,6 +232,7 @@ def isawadog(request):
 
     return render(request, 'doggonnitapp/isawadog.html', context)
 
+#add marker when you know which exact dog you saw
 def irecognizethatdog(request, dog_id):
     if request.method != 'POST':
         return HttpResponse(status=405)
@@ -264,7 +258,9 @@ def irecognizethatdog(request, dog_id):
 # Goto the db and find all missingdogreports with that dog_id
 # Return a JSON list back to the client
 
+
 def dogprofilemap(request, dog_id):
+
     dog = DogProfile.objects.get(pk=dog_id)
     dog_markers = []
     for dog_report in dog.missingdogreport_set.all():
@@ -274,3 +270,9 @@ def dogprofilemap(request, dog_id):
         })
     return JsonResponse({'dog_markers':dog_markers})
 
+
+#map of dogs from isawadog
+def unknowndogmap(request):
+
+    markers = MissingDogReport.objects.filter(dog=None)
+    return render(request, 'doggonnitapp/unknowndogmap.html', {'markers':markers, 'mapbox_api_key': secret.mapbox_api_key})

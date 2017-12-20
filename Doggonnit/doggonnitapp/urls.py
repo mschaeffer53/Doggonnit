@@ -19,7 +19,8 @@ urlpatterns = [
     url(r'^isawadog/$', views.isawadog, name='isawadog'),
     url(r'^irecognizethatdog/(?P<dog_id>[0-9]+)/$', views.irecognizethatdog, name='irecognizethatdog'),
     url(r'^test_json/$', views.test, name='test'),
-    url(r'^dogprofilemap/(?P<dog_id>[0-9]+)/$', views.dogprofilemap, name='dogprofilemap')
+    url(r'^dogprofilemap/(?P<dog_id>[0-9]+)/$', views.dogprofilemap, name='dogprofilemap'),
+    url(r'^unknowndogmap/$', views.unknowndogmap, name='unknowndogmap'),
 ]
 
 if settings.DEBUG:
