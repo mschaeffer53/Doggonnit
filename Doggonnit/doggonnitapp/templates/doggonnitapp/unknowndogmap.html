@@ -3,6 +3,13 @@
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>
 </head>
 
+<style>
+    .mapboxgl-popup {
+        max-width: 400px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    }
+</style>
+
 <body>
     <h1>Unknown dogs running around</h1>
     <div id='map' style='width: 600px; height: 500px;'></div>
@@ -27,18 +34,28 @@
         map.addControl(nav, 'top-left');
 
 
-        function new_lost_marker(x, y) {
+        function new_lost_marker(lng, lat, title, description, color) {
             let marker = new mapboxgl.Marker()
-                .setLngLat([x, y])
+                .setLngLat([lng, lat])
                 .addTo(map);
+            if (title) {
+                console.log('!!!')
+                marker.setPopup(new mapboxgl.Popup({ offset: 25 })
+                    .setHTML('<h3>' + title + '</h3><p>' + description + '</p>' + '<p>' + color + '</p>'))
+                    .addTo(map);
+            }
         }
 
 
+
+
         {% for marker in markers %}
-            new_lost_marker({{marker.long}}, {{marker.lat}})
+            {% if marker.description != '' %};
+            new_lost_marker({{marker.long}}, {{marker.lat}}, 'MISSING', "Description: {{marker.description}}", "Color: {{marker.color}}");
+            {% else %}
+            new_lost_marker({{marker.long}}, {{marker.lat}});
+            {% endif %}
         {% endfor %}
-
-
 
 
     </script>
@@ -46,3 +63,5 @@
     <a href="{% url 'doggonnitapp:isawadog' %}">Add a dog you saw to this map</a>
 
 </body>
+
+
