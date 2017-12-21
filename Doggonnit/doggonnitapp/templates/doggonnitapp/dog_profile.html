@@ -33,7 +33,7 @@
     <div class="container">
         {% if dog.dog_is_lost  %}
             <h1>**MISSING**</h1>
-            <h3>Missing since: {{dog.timestamp}}</h3>
+            <h3>Missing since: {{dog.missing_since}}</h3>
         {% endif %}
 
         <h3> {{ dog.name.upper }} </h3>

@@ -1,7 +1,7 @@
 
 from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-
+from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
 
 
@@ -118,10 +118,12 @@ def create_dog_profile(request):
         dog_personality = request.POST['personality']
         dog_image = request.FILES['dog_image']
         dog_description = request.POST['description']
+        missing_since = None
+
 
         profile = DogProfile(name=dog_name, age=dog_age, sex=dog_sex, breed=dog_breed, color=dog_color,
                              pattern=dog_pattern, weight=dog_weight, personality=dog_personality,
-                             dog_image=dog_image, description=dog_description, user=request.user)
+                             dog_image=dog_image, description=dog_description, user=request.user, missing_since=missing_since)
         profile.save()
 
         return HttpResponseRedirect(reverse('doggonnitapp:dog_profile', kwargs={'dog_id':profile.id}))
@@ -136,6 +138,7 @@ def dog_profile(request, dog_id):
     profile = get_object_or_404(UserProfile, user=dog.user)
     if request.method == 'POST':
         dog.dog_is_lost = not dog.dog_is_lost
+        dog.missing_since = timezone.now()
         dog.save()
 
     context = {'dog':dog,

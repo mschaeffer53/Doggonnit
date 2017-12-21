@@ -18,6 +18,7 @@ class DogProfile(models.Model):
     dog_image = models.ImageField()
     description = models.TextField(default='')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    missing_since = models.DateTimeField(default=None)
 
     def __str__(self):
         return f'{self.name} {self.age} {self.sex} {self.breed} {self.pattern}' \
