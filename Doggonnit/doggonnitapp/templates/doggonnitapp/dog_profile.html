@@ -21,7 +21,10 @@
         border-radius: 50%;
         cursor: pointer;
         padding: 0;
-        background-image:{{MEDIA_URL}}{{ dog.dog_image }};
+        background-image: url('{{MEDIA_URL}}{{ dog.dog_image }}');
+        width: 75px;
+        height: 75px;
+        background-size: contain;
     }
 </style>
 
@@ -64,7 +67,7 @@
             //home coordinates for dog
             let lat = {{ profile.latitude }};
             let lng = {{ profile.longitude }};
-
+            let home_coordinates = [lng, lat];
 
 
             //add new map
@@ -90,16 +93,16 @@
             map.addControl(nav, 'top-left');
 
             //create new marker for missing dog's home
-            function new_lost_marker(lng, lat){
-                return new mapboxgl.Marker()
+            function new_lost_marker(lng, lat, el=undefined){
+                return new mapboxgl.Marker(el)
                     .setLngLat([lng, lat])
                     .addTo(map);
-
             }
 
             let div = document.createElement('div');
-            div.className = "marker_div";
-            div.innerHTML = new_lost_marker(lng, lat)
+            div.className = 'marker_div';
+
+            new_lost_marker(lng, lat, div)
 
 
         </script>
@@ -137,9 +140,11 @@
 
         let coordinates_array = [];
         {% for dog_marker in dog.missingdogreport_set.all %}
+        console.log('{{dog_marker.timestamp}}');
         new_lost_marker({{dog_marker.long}}, {{dog_marker.lat}});
         coordinates_array.push([{{dog_marker.long}}, {{dog_marker.lat}}]);
         {% endfor %}
+        coordinates_array.unshift(home_coordinates);
         console.log(coordinates_array)
     </script>
 
@@ -183,6 +188,7 @@
             "line-color": "#888",
             "line-width": 8
         }
+
     });
 });
 
