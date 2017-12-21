@@ -159,7 +159,8 @@ def dogmap(request):
         profile = get_object_or_404(UserProfile, user=dog.user)
         coordinates.append({
             'lat': profile.latitude,
-            'lng': profile.longitude
+            'lng': profile.longitude,
+            'image': dog.dog_image.url
         })
     print(coordinates)
 

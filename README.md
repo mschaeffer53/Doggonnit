@@ -36,9 +36,9 @@ A basic account will let you:
   -  ~~Post your own sightings of dogs to the network~~
   
 ~~An advanced account will let you:~~ *Only one type of account now*
-  - ~~Same features of basic account~~
-  - ~~Have profiles for your own dogs~~
-  - ~~Easily notify the network of your missing dog~~
+  - Same features of basic account
+  - Have profiles for your own dogs
+  - Easily notify the network of your missing dog
   
  *Once signed in*
  
@@ -47,7 +47,9 @@ A basic account will let you:
  and a line connecting the dots of a specific dog chronologically. The line connecting the 
  points will be stylized so that you can tell where the dog was most recently seen.
         
-        #TODO- Line connecting the points
+        #TODO 
+        ~~Line connecting the points~~
+        Get custom markers for dogmap homes
  ~~Users can click on dog profiles to get more details about the dog (e.g. name, breed, age, pictures, rewards).~~
  
  *Recovering a lost dog*

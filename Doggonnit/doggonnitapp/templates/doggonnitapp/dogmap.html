@@ -23,12 +23,15 @@
         font-size: 24px;
     }
 
-    .marker {
+    .marker_div {
         display: block;
         border: none;
         border-radius: 50%;
         cursor: pointer;
         padding: 0;
+        width: 75px;
+        height: 75px;
+        background-size: contain;
     }
 </style>
 
@@ -57,21 +60,31 @@
         map.addControl(nav, 'top-left');
 
 
-        function new_lost_marker(lng, lat){
-            let marker = new mapboxgl.Marker()
+//        function new_lost_marker(lng, lat){
+//            let marker = new mapboxgl.Marker()
+//                .setLngLat([lng, lat])
+//                .addTo(map);
+//        }
+
+        function new_lost_marker(lng, lat, el=undefined){
+            return new mapboxgl.Marker(el)
                 .setLngLat([lng, lat])
                 .addTo(map);
-        }
+            }
+
+
 
 //      add markers for missing dogs to map
         {% for coordinate in coordinates %}
-
-            new_lost_marker({{coordinate.lng}}, {{coordinate.lat}});
-
+            var div = document.createElement('div');
+            div.className = 'marker_div';
+            div.style.backgroundImage = 'url({{ coordinate.image }})';
+            new_lost_marker({{coordinate.lng}}, {{coordinate.lat}}, div);
 
         {% endfor %}
 
 
+//See coordinates on click
 //        map.on('click', function (e) {
 //            let lat = e.lngLat.lat;
 //            let lng = e.lngLat.lng;

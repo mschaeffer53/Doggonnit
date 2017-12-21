@@ -2,8 +2,8 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
-# Create your models here.
 
+# Create your models here.
 
 class DogProfile(models.Model):
     name = models.CharField(max_length=50)
@@ -18,7 +18,6 @@ class DogProfile(models.Model):
     dog_image = models.ImageField()
     description = models.TextField(default='')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-
 
     def __str__(self):
         return f'{self.name} {self.age} {self.sex} {self.breed} {self.pattern}' \
