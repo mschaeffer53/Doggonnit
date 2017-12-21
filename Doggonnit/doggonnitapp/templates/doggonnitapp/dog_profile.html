@@ -65,6 +65,8 @@
             let lat = {{ profile.latitude }};
             let lng = {{ profile.longitude }};
 
+
+
             //add new map
             mapboxgl.accessToken = '{{ mapbox_api_key }}';
             let map = new mapboxgl.Map({
@@ -88,9 +90,9 @@
             map.addControl(nav, 'top-left');
 
             //create new marker for missing dog's home
-            function new_lost_marker(x, y){
+            function new_lost_marker(lng, lat){
                 return new mapboxgl.Marker()
-                    .setLngLat([x, y])
+                    .setLngLat([lng, lat])
                     .addTo(map);
 
             }
@@ -109,14 +111,18 @@
     <script>
         //add markers on click
         let marker;
+
         map.on('click', function (e) {
             let lat = e.lngLat.lat;
             let lng = e.lngLat.lng;
             remove_marker(marker);
             marker = new_lost_marker(lng, lat);
+
             document.getElementById('lat').value = lat;
             document.getElementById('lng').value = lng;
         });
+
+
 
         //remove marker if a previous one exists currently not working
         function remove_marker(marker) {
@@ -129,11 +135,12 @@
 //            new_lost_marker(markers[i].lng, markers[i].lat)
 //        }
 
-
+        let coordinates_array = [];
         {% for dog_marker in dog.missingdogreport_set.all %}
         new_lost_marker({{dog_marker.long}}, {{dog_marker.lat}});
+        coordinates_array.push([{{dog_marker.long}}, {{dog_marker.lat}}]);
         {% endfor %}
-
+        console.log(coordinates_array)
     </script>
 
     <form action="{% url 'doggonnitapp:irecognizethatdog' dog.pk %}" method="POST">
@@ -148,4 +155,38 @@
 
         <button type="submit">I saw this dog!</button>
     </form>
+
+
+<!--Add line connecting markers-->
+    <script>
+    map.on('load', function () {
+
+    map.addLayer({
+        "id": "route",
+        "type": "line",
+        "source": {
+            "type": "geojson",
+            "data": {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "type": "LineString",
+                    "coordinates": coordinates_array
+                }
+            }
+        },
+        "layout": {
+            "line-join": "round",
+            "line-cap": "round"
+        },
+        "paint": {
+            "line-color": "#888",
+            "line-width": 8
+        }
+    });
+});
+
+</script>
+
+
 </body>

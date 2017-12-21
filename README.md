@@ -32,22 +32,23 @@ Libraries and frameworks:
 *New users will be prompted to set up an account* 
 
 A basic account will let you:
-  - See maps of lost dogs/sighted dogs
-  - Post your own sightings of dogs to the network
+  -  ~~See maps of lost dogs/sighted dogs~~
+  -  ~~Post your own sightings of dogs to the network~~
   
- An advanced account will let you:
-  - Same features of basic account
-  - Have profiles for your own dogs
-  - Easily notify the network of your missing dog
+~~An advanced account will let you:~~ *Only one type of account now*
+  - ~~Same features of basic account~~
+  - ~~Have profiles for your own dogs~~
+  - ~~Easily notify the network of your missing dog~~
   
  *Once signed in*
  
  The user will see a map of missing dogs in their area.
  The map will have points that represent where a dog was seen,
- and a line connecting the dots of a specific dog chronologically. The line connectiing the 
+ and a line connecting the dots of a specific dog chronologically. The line connecting the 
  points will be stylized so that you can tell where the dog was most recently seen.
- 
- Users can click on dog profiles to get more details about the dog (e.g. name, breed, age, pictures, rewards).
+        
+        #TODO- Line connecting the points
+ ~~Users can click on dog profiles to get more details about the dog (e.g. name, breed, age, pictures, rewards).~~
  
  *Recovering a lost dog*
  
@@ -79,25 +80,28 @@ A basic account will let you:
   *Dog Profile*
   - Name
   - Age
+  - Sex
   - Breed
   - Color
+  - Pattern
   - Picture
   - Weight
-  - Personality (e.g. timid, rabid, ferral, friendly) 
+  - Personality (e.g. timid, rabid, feral, friendly) 
+  - Description
   - Lost Status (boolean)
   - Foreign key (link dog's map information)
   
-  *Map information*
+  ~~*Map information*~~ *Missing Dog Report*
   - Location
   - Timestamp
-  
+  - Dog Profile info
   
   **Schedule**
   
   *Milestone 1*
-  - User profiles
-  - Dog profiles
-  - Maps
+  - ~~User profiles~~
+  - ~~Dog profiles~~
+  - ~~Maps~~
   - Alert System
   
   *Milestone 2*
