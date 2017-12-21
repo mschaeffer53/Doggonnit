@@ -118,3 +118,14 @@ A basic account will let you:
   - Phone app version
   - Push notifications
   - Paypal rewards
+
+
+##todos and thoughts
+- make line color gradient
+- add points
+- add more details to unknown dog map popup/side profile
+- connect user account details link to each page
+- make quick links on top of website
+- links to unknown dog map
+- alert dog owner when user sees their dog
+- add "missing since date/time" to missing profile
