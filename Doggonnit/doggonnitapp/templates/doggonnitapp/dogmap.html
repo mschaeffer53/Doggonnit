@@ -57,9 +57,9 @@
         map.addControl(nav, 'top-left');
 
 
-        function new_lost_marker(x, y){
+        function new_lost_marker(lng, lat){
             let marker = new mapboxgl.Marker()
-                .setLngLat([x, y])
+                .setLngLat([lng, lat])
                 .addTo(map);
         }
 
