@@ -22,9 +22,6 @@ from . import secret
 
 def get_latlng(address, city, state):
     full_address = ', '.join([address, city, state])
-    #print(full_address)
-
-    #url = 'https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyD1CWxGv2eS2EqY7t6a4qRLZQ2Aid-HKxY'
     url = 'https://maps.googleapis.com/maps/api/geocode/json'
     print(url)
     params = {
@@ -151,10 +148,16 @@ def dog_profile(request, dog_id):
 
 # a map of all the owner reported missing dogs
 def dogmap(request):
-    weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
-    colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
-    breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt', 'Husky']
-    ages = ['puppy', 'adult', 'really old looking']
+    # weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
+    # colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
+    # breeds = ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Beagle',
+    #           'Poodle', 'Rottweiler', 'Boxer', 'Pointer', 'Yorkshire Terrier', 'French Bulldog', 'Siberian Husky',
+    #           'Great Dane', 'Doberman', 'Aussie Shepherd', 'Schnauzer', 'Corgi', 'Shih Tzu', 'Pomeranian',
+    #           'Sheepdog', 'Snoop Dogg', 'Cocker Spaniel', 'Bernese Mountain Dog', 'Mastiff', 'Chihuahua', 'Pug', 'Maltese',
+    #           'Newfoundland', 'Collie', 'Basset Hound', 'Akita', 'St. Bernard', 'Bloodhound', 'Whippet', 'Chow Chow',
+    #           'Bull Terrier', 'Pit Bull', 'Greyhound', 'Aussie Cattle Dog', 'Dachshund', 'English Bulldog',
+    #           'Jack Russel Terrier', 'Staffordshire Bull Terrier', 'Wheaton Terrier', 'Malamute']
+    # ages = ['puppy', 'adult', 'really old looking']
 
     dogs = DogProfile.objects.filter(dog_is_lost=True)
     coordinates = []
@@ -168,10 +171,10 @@ def dogmap(request):
     print(coordinates)
 
     context = {
-        'weights': weights,
-        'breeds': breeds,
-        'colors': colors,
-        'ages': ages,
+        # 'weights': weights,
+        # 'breeds': breeds,
+        # 'colors': colors,
+        # 'ages': ages,
         'dogs': dogs,
         'coordinates':coordinates,
         'mapbox_api_key': secret.mapbox_api_key
@@ -197,8 +200,17 @@ def myaccount(request):
 def isawadog(request):
     weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
     colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey']
-    breeds = ['Lab', 'Poodle', 'Labradoodle', 'Mutt', 'Husky']
+    breeds = ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Beagle',
+              'Poodle', 'Rottweiler', 'Boxer', 'Pointer', 'Yorkshire Terrier', 'French Bulldog', 'Siberian Husky',
+              'Great Dane', 'Doberman', 'Aussie Shepherd', 'Schnauzer', 'Corgi', 'Shih Tzu', 'Pomeranian',
+              'Sheepdog', 'Snoop Dogg', 'Cocker Spaniel', 'Bernese Mountain Dog', 'Mastiff', 'Chihuahua', 'Pug', 'Maltese',
+              'Newfoundland', 'Collie', 'Basset Hound', 'Akita', 'St. Bernard', 'Bloodhound', 'Whippet', 'Chow Chow',
+              'Bull Terrier', 'Pit Bull', 'Greyhound', 'Aussie Cattle Dog', 'Dachshund', 'English Bulldog',
+              'Jack Russel Terrier', 'Staffordshire Bull Terrier', 'Wheaton Terrier', 'Malamute']
     ages = ['puppy', 'adult', 'really old looking']
+
+    breeds = sorted(breeds)
+
 
     dogs = DogProfile.objects.filter(dog_is_lost=True)
     coordinates = []
