@@ -1,118 +1,124 @@
+{% extends 'doggonnitapp/base.html' %}
+
 <head>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>
+    <!--<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>-->
+    <!--<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>-->
 
 </head>
-
+{% block content %}
 <style>
-    div{
-        padding-top: 5px;
-    }
+    /*div{*/
+        /*padding-top: 5px;*/
+    /*}*/
 
-    img{
-        width: 250px;
-        height: 250px;
-    }
+    /*img{*/
+        /*width: 250px;*/
+        /*height: 250px;*/
+    /*}*/
 </style>
 
-<h1>I saw a lost dog that I cant specifically identify</h1>
-<h2>This is where the dog was, and what it looked like</h2>
-<h3>This will show up on the unknowndogmap</h3>
+<div class="container">
+    <div class="container">
+        <h1>I saw a lost dog that I cant specifically identify</h1>
+        <h2>This is where the dog was, and what it looked like</h2>
+        <h3>This will show up on the unknowndogmap</h3>
+    </div>
+    <div id='map' style='width: 600px; height: 500px;'></div>
+        <script>
+            mapboxgl.accessToken = '{{ mapbox_api_key }}';
+            let map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v9',
+                center: [-122.667, 45.523],
+                zoom: 10
+            });
+            map.addControl(new mapboxgl.GeolocateControl({
+                positionOptions: {
+                    enableHighAccuracy: true
+                },
+                trackUserLocation: true
+            }));
 
-<div id='map' style='width: 600px; height: 500px;'></div>
-    <script>
-        mapboxgl.accessToken = '{{ mapbox_api_key }}';
-        let map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/streets-v9',
-            center: [-122.667, 45.523],
-            zoom: 10
-        });
-        map.addControl(new mapboxgl.GeolocateControl({
-            positionOptions: {
-                enableHighAccuracy: true
-            },
-            trackUserLocation: true
-        }));
+            map.addControl(new mapboxgl.FullscreenControl());
 
-        map.addControl(new mapboxgl.FullscreenControl());
-
-        let nav = new mapboxgl.NavigationControl();
-        map.addControl(nav, 'top-left');
+            let nav = new mapboxgl.NavigationControl();
+            map.addControl(nav, 'top-left');
 
 
-        function new_lost_marker(x, y){
-            return new mapboxgl.Marker()
-                .setLngLat([x, y])
-                .addTo(map);
-        }
-
-//add markers on click
-        let marker;
-        map.on('click', function (e) {
-            let lat = e.lngLat.lat;
-            let lng = e.lngLat.lng;
-            remove_marker(marker);
-            marker = new_lost_marker(lng, lat);
-            document.getElementById('lat').value = lat;
-            document.getElementById('lng').value = lng;
-        });
-
-//remove marker if a previous one exists
-        function remove_marker(marker) {
-            if (marker !== undefined) {
-                marker.remove();
+            function new_lost_marker(x, y){
+                return new mapboxgl.Marker()
+                    .setLngLat([x, y])
+                    .addTo(map);
             }
-        };
 
-    </script>
+    //add markers on click
+            let marker;
+            map.on('click', function (e) {
+                let lat = e.lngLat.lat;
+                let lng = e.lngLat.lng;
+                remove_marker(marker);
+                marker = new_lost_marker(lng, lat);
+                document.getElementById('lat').value = lat;
+                document.getElementById('lng').value = lng;
+            });
+
+    //remove marker if a previous one exists
+            function remove_marker(marker) {
+                if (marker !== undefined) {
+                    marker.remove();
+                }
+            };
+
+        </script>
 
 
 
-<div>
-    <form action="{% url 'doggonnitapp:isawadog' %}" method="POST">
-        {% csrf_token %}
+    <div>
+        <form action="{% url 'doggonnitapp:isawadog' %}" method="POST">
+            {% csrf_token %}
 
-        <div>
+            <div>
 
-            <select name="age">
-                <option selected disabled> Age </option>
-                {% for age in ages %}
-                    <option>{{age}}</option>
-                {% endfor %}
-            </select>
+                <select name="age">
+                    <option selected disabled> Age </option>
+                    {% for age in ages %}
+                        <option>{{age}}</option>
+                    {% endfor %}
+                </select>
 
-            <select name="weight">
-                <option selected disabled> Size </option>
-                {% for weight in weights %}
-                    <option>{{weight}}</option>
-                {% endfor %}
-            </select>
+                <select name="weight">
+                    <option selected disabled> Size </option>
+                    {% for weight in weights %}
+                        <option>{{weight}}</option>
+                    {% endfor %}
+                </select>
 
-            <select name="breed">
-                <option selected disabled> Breed </option>
-                <option>Unknown</option>
-                {% for breed in breeds %}
-                    <option>{{breed}}</option>
-                {% endfor %}
-            </select>
+                <select name="breed">
+                    <option selected disabled> Breed </option>
+                    <option>Unknown</option>
+                    {% for breed in breeds %}
+                        <option>{{breed}}</option>
+                    {% endfor %}
+                </select>
 
-            <select name="color">
-                <option selected disabled> Color </option>
-                {% for color in colors %}
-                    <option>{{color}}</option>
-                {% endfor %}
-            </select>
+                <select name="color">
+                    <option selected disabled> Color </option>
+                    {% for color in colors %}
+                        <option>{{color}}</option>
+                    {% endfor %}
+                </select>
 
-            <input type="hidden" name="lat" id="lat">
-            <input type="hidden" name="lng" id="lng">
+                <input type="hidden" name="lat" id="lat">
+                <input type="hidden" name="lng" id="lng">
 
-        </div>
+            </div>
 
-        <div>
-            <textarea rows="5" cols="75" placeholder="description" name="description"></textarea>
-        </div>
+            <div>
+                <textarea rows="5" cols="75" placeholder="description" name="description"></textarea>
+            </div>
 
-        <button type="submit"> Submit </button>
-    </form>
+            <button type="submit"> Submit </button>
+        </form>
+    </div>
 </div>
+{% endblock %}

@@ -11,6 +11,7 @@ from django.core.files import File
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
+from django.core.mail import send_mail
 
 #example of json
 def test(request):
@@ -267,6 +268,15 @@ def irecognizethatdog(request, dog_id):
     )
     missing_dog_report.save()
 
+    # send_mail(
+    #     'Someone saw your dog!',
+    #     'Here is the message.',
+    #     'doggoneitapp@gmail.com',
+    #     ['mschaeffer53@gmail.com'],
+    #     fail_silently=True,
+    # )
+    #
+
     return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
 
 # TODO:
@@ -292,3 +302,4 @@ def unknowndogmap(request):
 
     markers = MissingDogReport.objects.filter(dog=None)
     return render(request, 'doggonnitapp/unknowndogmap.html', {'markers':markers, 'mapbox_api_key': secret.mapbox_api_key})
+

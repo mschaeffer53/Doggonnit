@@ -1,5 +1,10 @@
-<h1>human registration page</h1>
+{% extends 'doggonnitapp/base.html' %}
 
+{% block content %}
+<div class="container">
+<h1>human registration page</h1>
+</div>
+<div class="container">
 <form action="{% url 'doggonnitapp:create_user_profile' %}" method="POST">
     {% csrf_token %}
 
@@ -21,5 +26,5 @@
     <button type="submit"> create account </button>
 
 </form>
-
-
+</div>
+{% endblock %}

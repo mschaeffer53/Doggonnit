@@ -7,9 +7,9 @@
 </head>
 {% block content %}
     <style>
-        div{
-            padding-top: 5px;
-        }
+        /*div{*/
+            /*padding-top: 5px;*/
+        /*}*/
 
         .dog_img{
             width: 250px;
@@ -27,13 +27,18 @@
 
         .marker_div {
             display: block;
-            border: none;
+            border: 2px solid lightblue;
             border-radius: 50%;
             cursor: pointer;
             padding: 0;
             width: 75px;
             height: 75px;
             background-size: contain;
+
+        }
+
+        #map{
+            border: 3px solid lightseagreen;
         }
     </style>
 
@@ -49,8 +54,8 @@
             let map = new mapboxgl.Map({
                 container: 'map',
                 style: 'mapbox://styles/mapbox/streets-v9',
-                center: [-122.667, 45.523],
-                zoom: 8
+                center: [-117.39373746342122, 44.28054763363363],  //[-122.667, 45.523], burnside bridge
+                zoom: 5.5,
             });
             map.addControl(new mapboxgl.GeolocateControl({
                 positionOptions: {
@@ -64,12 +69,6 @@
             let nav = new mapboxgl.NavigationControl();
             map.addControl(nav, 'top-left');
 
-
-    //        function new_lost_marker(lng, lat){
-    //            let marker = new mapboxgl.Marker()
-    //                .setLngLat([lng, lat])
-    //                .addTo(map);
-    //        }
 
             function new_lost_marker(lng, lat, el=undefined){
                 return new mapboxgl.Marker(el)
@@ -88,17 +87,11 @@
 
             {% endfor %}
 
-
-
-    //        map.on('click', function (e) {
-    //            let lat = e.lngLat.lat;
-    //            let lng = e.lngLat.lng;
-    //            new_lost_marker(lng, lat)
-    //        });
-
+//            Alert the lat long on click
+//            map.on('click', function (e) {
+//                alert(e.lngLat);
+//            });
         </script>
-
-
 
 
         <hr/>

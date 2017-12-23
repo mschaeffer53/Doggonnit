@@ -132,3 +132,4 @@ A basic account will let you:
 - ~~add "missing since date/time" to missing profile~~
 - bootstrap that shit!
 - user who sees missing dog should get credit on the map or something
+- ~~graphic art~~
