@@ -146,7 +146,42 @@
         coordinates_array.push([{{dog_marker.long}}, {{dog_marker.lat}}]);
         {% endfor %}
         coordinates_array.unshift(home_coordinates);
-        console.log(coordinates_array)
+        console.log(coordinates_array);
+
+//create interpolated hot cold lines
+        function lerp(a, b, t) {
+            return (1-t)*a + t*b;
+        }
+
+        function lerp_color(a, b, t) {
+            return [lerp(a[0], b[0], t),
+                    lerp(a[1], b[1], t),
+                    lerp(a[2], b[2], t)]
+        }
+
+        let color_a = [0, 0, 255];
+        let color_b = [255, 0, 0];
+
+        let features = [];
+        for (let i=0; i<coordinates_array.length-1; ++i) {
+            let ca = coordinates_array[i];
+            let cb = coordinates_array[i+1];
+            let t = i/(coordinates_array.length-1);
+            let c = lerp_color(color_a, color_b, t);
+            let feature = {
+                'type':'Feature',
+                'properties': {
+                    'color':'rgb('+c[0]+','+c[1]+','+c[2]+')'
+                },
+                'geometry': {
+                    'type':'LineString',
+                    'coordinates': [ca, cb]
+                }
+            };
+            features.push(feature)
+        }
+
+
     </script>
 
     <form action="{% url 'doggonnitapp:irecognizethatdog' dog.pk %}" method="POST">
@@ -174,12 +209,8 @@
         "source": {
             "type": "geojson",
             "data": {
-                "type": "Feature",
-                "properties": {},
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": coordinates_array
-                }
+                "type": "FeatureCollection",
+                "features":features
             }
         },
         "layout": {
@@ -188,8 +219,11 @@
         },
 //        This works
         "paint": {
-            "line-color": "lightseagreen",
-            "line-width": 8,
+            'line-width': 6,
+            'line-color': {
+                'type': 'identity',
+                'property': 'color'
+            }
         }
 
 
