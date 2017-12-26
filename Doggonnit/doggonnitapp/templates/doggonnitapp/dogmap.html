@@ -40,6 +40,14 @@
         #map{
             border: 3px solid lightseagreen;
         }
+
+        .dogs{
+            border: 1px solid darkcyan;
+        }
+
+        .missing{
+            color: mediumslateblue;
+        }
     </style>
 
 
@@ -99,8 +107,10 @@
         <div class="profile_container row">
             {% for dog in dogs%}
                 <div class="dogs col">
-                    <h1>**MISSING**</h1>
-                    <a href="{% url 'doggonnitapp:dog_profile' dog.id %}" class="row">Find {{dog.name.upper}}</a>
+
+                    <h1 class="missing">**MISSING**</h1>
+
+                    <a href="{% url 'doggonnitapp:dog_profile' dog.id %}" class="row">Help find {{dog.name.upper}}</a>
                     <!--<h3> {{ dog.name.upper }} </h3>-->
 
                     <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />

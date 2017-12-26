@@ -1,9 +1,10 @@
+{% extends 'doggonnitapp/base.html' %}
 <head>
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>
 </head>
 
-
+{% block content %}
 <style>
     .container img {
         width:150px;
@@ -17,7 +18,7 @@
 
     .marker_div {
         display: block;
-        border: none;
+        border: 2px solid lightblue;
         border-radius: 50%;
         cursor: pointer;
         padding: 0;
@@ -26,11 +27,19 @@
         height: 75px;
         background-size: contain;
     }
+
+    #map{
+        border: 3px solid lightseagreen;
+    }
+
+
+
 </style>
 
-<body>
 
-    <div class="container">
+<div class="container">
+    <div class="col">
+
         {% if dog.dog_is_lost  %}
             <h1>**MISSING**</h1>
             <h3>Missing since: {{dog.missing_since}}</h3>
@@ -51,6 +60,7 @@
             <div> Description : {{dog.description}} </div>
         </div>
 
+
         <form action="{% url 'doggonnitapp:dog_profile' dog.id %}" method="POST">
             {% csrf_token %}
             {% if dog.dog_is_lost  %}
@@ -61,176 +71,181 @@
         </form>
     </div>
 
-    {% if dog.dog_is_lost %}
-        <div id='map' style='width: 600px; height: 500px;'></div>
+{% if dog.dog_is_lost %}
+    <div class="col">
+        <div id='map' style='width: 600px; height: 500px;'>
 
+            <script>
+                //home coordinates for dog
+                let lat = {{ profile.latitude }};
+                let lng = {{ profile.longitude }};
+                let home_coordinates = [lng, lat];
+
+
+                //add new map
+                mapboxgl.accessToken = '{{ mapbox_api_key }}';
+                let map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/streets-v9',
+                    center: home_coordinates,
+                    zoom: 10
+                });
+
+                //add map features
+                map.addControl(new mapboxgl.GeolocateControl({
+                    positionOptions: {
+                        enableHighAccuracy: true
+                        },
+                        trackUserLocation: true
+                }));
+
+                map.addControl(new mapboxgl.FullscreenControl());
+
+                let nav = new mapboxgl.NavigationControl();
+                map.addControl(nav, 'top-left');
+
+                //create new marker for missing dog's home
+                function new_lost_marker(lng, lat, el=undefined){
+                    return new mapboxgl.Marker(el)
+                        .setLngLat([lng, lat])
+                        .addTo(map);
+                }
+
+                let div = document.createElement('div');
+                div.className = 'marker_div';
+
+                new_lost_marker(lng, lat, div)
+
+
+            </script>
+        </div>
+    </div>
+{% endif %}
+    <div class="container">
+        <div class="col">
+            <a href="{% url 'doggonnitapp:dogmap' %}">Go to map of all missing dogs</a>
+        </div>
         <script>
-            //home coordinates for dog
-            let lat = {{ profile.latitude }};
-            let lng = {{ profile.longitude }};
-            let home_coordinates = [lng, lat];
+            //add markers on click
+            let marker;
 
+            map.on('click', function (e) {
+                let lat = e.lngLat.lat;
+                let lng = e.lngLat.lng;
+                remove_marker(marker);
+                marker = new_lost_marker(lng, lat);
 
-            //add new map
-            mapboxgl.accessToken = '{{ mapbox_api_key }}';
-            let map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v9',
-                center: home_coordinates,
-                zoom: 10
+                document.getElementById('lat').value = lat;
+                document.getElementById('lng').value = lng;
             });
 
-            //add map features
-            map.addControl(new mapboxgl.GeolocateControl({
-                positionOptions: {
-                    enableHighAccuracy: true
-                    },
-                    trackUserLocation: true
-            }));
 
-            map.addControl(new mapboxgl.FullscreenControl());
 
-            let nav = new mapboxgl.NavigationControl();
-            map.addControl(nav, 'top-left');
+            //remove marker if a previous one exists currently not working
+            function remove_marker(marker) {
+                if (marker !== undefined) {
+                    marker.remove();
+                }
+            }
+    //        let markers = JSON.parse("{{ dog_markers }}".replace(/&quot;/g, '\"'));
+    //        for (let i=0; i<markers.length; ++i) {
+    //            new_lost_marker(markers[i].lng, markers[i].lat)
+    //        }
 
-            //create new marker for missing dog's home
-            function new_lost_marker(lng, lat, el=undefined){
-                return new mapboxgl.Marker(el)
-                    .setLngLat([lng, lat])
-                    .addTo(map);
+            let coordinates_array = [];
+            {% for dog_marker in dog.missingdogreport_set.all %}
+            console.log('{{dog_marker.timestamp}}');
+            new_lost_marker({{dog_marker.long}}, {{dog_marker.lat}});
+            coordinates_array.push([{{dog_marker.long}}, {{dog_marker.lat}}]);
+            {% endfor %}
+            coordinates_array.unshift(home_coordinates);
+            console.log(coordinates_array);
+
+    //create interpolated hot cold lines
+            function lerp(a, b, t) {
+                return (1-t)*a + t*b;
             }
 
-            let div = document.createElement('div');
-            div.className = 'marker_div';
+            function lerp_color(a, b, t) {
+                return [lerp(a[0], b[0], t),
+                        lerp(a[1], b[1], t),
+                        lerp(a[2], b[2], t)]
+            }
 
-            new_lost_marker(lng, lat, div)
+            let color_a = [0, 0, 255];
+            let color_b = [255, 0, 0];
+
+            let features = [];
+            for (let i=0; i<coordinates_array.length-1; ++i) {
+                let ca = coordinates_array[i];
+                let cb = coordinates_array[i+1];
+                let t = i/(coordinates_array.length-1);
+                let c = lerp_color(color_a, color_b, t);
+                let feature = {
+                    'type':'Feature',
+                    'properties': {
+                        'color':'rgb('+c[0]+','+c[1]+','+c[2]+')'
+                    },
+                    'geometry': {
+                        'type':'LineString',
+                        'coordinates': [ca, cb]
+                    }
+                };
+                features.push(feature)
+            }
 
 
         </script>
 
-    {% endif %}
+        <form action="{% url 'doggonnitapp:irecognizethatdog' dog.pk %}" method="POST">
+            {% csrf_token %}
 
-    <a href="{% url 'doggonnitapp:dogmap' %}">Go to map of all missing dogs</a>
+            <div class="col">
+                <textarea rows="5" cols="75" placeholder="description/bonus details" name="description"></textarea>
+            </div>
 
+            <input type="hidden" name="lat" id="lat">
+            <input type="hidden" name="lng" id="lng">
+
+            <div class="col">
+                <button type="submit">I saw this dog!</button>
+            </div>
+        </form>
+    </div>
+<!--Add line connecting markers-->
     <script>
-        //add markers on click
-        let marker;
-
-        map.on('click', function (e) {
-            let lat = e.lngLat.lat;
-            let lng = e.lngLat.lng;
-            remove_marker(marker);
-            marker = new_lost_marker(lng, lat);
-
-            document.getElementById('lat').value = lat;
-            document.getElementById('lng').value = lng;
-        });
+        map.on('load', function () {
 
 
-
-        //remove marker if a previous one exists currently not working
-        function remove_marker(marker) {
-            if (marker !== undefined) {
-                marker.remove();
-            }
-        }
-//        let markers = JSON.parse("{{ dog_markers }}".replace(/&quot;/g, '\"'));
-//        for (let i=0; i<markers.length; ++i) {
-//            new_lost_marker(markers[i].lng, markers[i].lat)
-//        }
-
-        let coordinates_array = [];
-        {% for dog_marker in dog.missingdogreport_set.all %}
-        console.log('{{dog_marker.timestamp}}');
-        new_lost_marker({{dog_marker.long}}, {{dog_marker.lat}});
-        coordinates_array.push([{{dog_marker.long}}, {{dog_marker.lat}}]);
-        {% endfor %}
-        coordinates_array.unshift(home_coordinates);
-        console.log(coordinates_array);
-
-//create interpolated hot cold lines
-        function lerp(a, b, t) {
-            return (1-t)*a + t*b;
-        }
-
-        function lerp_color(a, b, t) {
-            return [lerp(a[0], b[0], t),
-                    lerp(a[1], b[1], t),
-                    lerp(a[2], b[2], t)]
-        }
-
-        let color_a = [0, 0, 255];
-        let color_b = [255, 0, 0];
-
-        let features = [];
-        for (let i=0; i<coordinates_array.length-1; ++i) {
-            let ca = coordinates_array[i];
-            let cb = coordinates_array[i+1];
-            let t = i/(coordinates_array.length-1);
-            let c = lerp_color(color_a, color_b, t);
-            let feature = {
-                'type':'Feature',
-                'properties': {
-                    'color':'rgb('+c[0]+','+c[1]+','+c[2]+')'
+            map.addLayer({
+                "id": "route",
+                "type": "line",
+                "source": {
+                    "type": "geojson",
+                    "data": {
+                        "type": "FeatureCollection",
+                        "features":features
+                    }
                 },
-                'geometry': {
-                    'type':'LineString',
-                    'coordinates': [ca, cb]
-                }
-            };
-            features.push(feature)
-        }
+                "layout": {
+                    "line-join": "round",
+                    "line-cap": "round"
+                },
 
+                "paint": {
+                    'line-width': 6,
+                    'line-color': {
+                        'type': 'identity',
+                        'property': 'color'
+                    }
+                }
+
+
+            });
+        });
 
     </script>
 
-    <form action="{% url 'doggonnitapp:irecognizethatdog' dog.pk %}" method="POST">
-        {% csrf_token %}
+</div>
 
-        <div>
-            <textarea rows="5" cols="75" placeholder="description/bonus details" name="description"></textarea>
-        </div>
-
-        <input type="hidden" name="lat" id="lat">
-        <input type="hidden" name="lng" id="lng">
-
-        <button type="submit">I saw this dog!</button>
-    </form>
-
-
-<!--Add line connecting markers-->
-    <script>
-    map.on('load', function () {
-
-
-    map.addLayer({
-        "id": "route",
-        "type": "line",
-        "source": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features":features
-            }
-        },
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round"
-        },
-//        This works
-        "paint": {
-            'line-width': 6,
-            'line-color': {
-                'type': 'identity',
-                'property': 'color'
-            }
-        }
-
-
-    });
-});
-
-</script>
-
-
-</body>
+{% endblock %}
