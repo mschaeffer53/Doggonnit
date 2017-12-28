@@ -1,27 +1,28 @@
 {% extends 'doggonnitapp/base.html' %}
 {% block content %}
-<style>
-    img{
-        width:500px;
-    }
-    div{
-        font-size:24px;
-    }
-</style>
+<!--<style>-->
+    <!--img{-->
+        <!--width:500px;-->
+    <!--}-->
+    <!--div{-->
+        <!--font-size:24px;-->
+    <!--}-->
+<!--</style>-->
 <div class="container">
-    <h1>my account</h1>
+    <h1>My account</h1>
 
-    <h2>My dogs</h2>
+    <h5>My dogs</h5>
     <hr/>
     <div class="col">
     {% for dog in dogs %}
         <div>{{dog.name.upper}}</div>
-        <img src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+        <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+        <hr/>
     {% endfor %}
 
     </div>
 
-    <h2>My points</h2>
+    <h5>My points</h5>
     {{profile.points}}
 </div>
 {% endblock %}
