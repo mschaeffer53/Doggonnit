@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-<h1>human registration page</h1>
+<h1>Human registration page</h1>
 </div>
 <div class="container">
 <form action="{% url 'doggonnitapp:create_user_profile' %}" method="POST">
@@ -10,7 +10,7 @@
 
     <input type="text" placeholder="user name" name="username" required>
     <input type="password" placeholder="password" name="password" required>
-    <input type="email" placeholder="email" name="email" required>
+    <input type="email" placeholder="Email" name="email" required>
     <input type="text" placeholder="Street address" name="address" required>
     <input type="text" placeholder="City" name="city" required>
 

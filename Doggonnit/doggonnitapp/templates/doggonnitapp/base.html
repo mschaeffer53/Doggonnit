@@ -32,7 +32,11 @@
             <a class="nav-link" href="{% url 'doggonnitapp:dogmap' %}">Dog Map <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'doggonnitapp:isawadog' %}"">I Saw a Dog</a>
+            <a class="nav-link" href="{% url 'doggonnitapp:isawadog' %}">I Saw a Dog</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'doggonnitapp:unknowndogmap' %}">Unidentified Dogs</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{% url 'doggonnitapp:myaccount' %}">My Account</a>
@@ -41,7 +45,7 @@
             <a class="nav-link" href="{% url 'doggonnitapp:create_dog_profile' %}">Register your Dog</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" href="#">Disabled</a>
+            <a class="nav-link" href="{% url 'doggonnitapp:index' %}">Home</a>
           </li>
         </ul>
       </div>
@@ -53,5 +57,5 @@
 
 <hr/>
 <div class="container">
-    Doggoneit App. the app for when your dog is gone. 2017. All rights reserved.
+    Doggoneit App. the app for when your dog is gone. 2018. All rights reserved...or something like that
 </div>

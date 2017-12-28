@@ -121,15 +121,22 @@ A basic account will let you:
 
 
 ##todos and thoughts
-- make line color gradient
-- add points
+- ~~make line color gradient~~
+- add points for reward system
 - delete sightings when dog is found
 - ~~add more details to unknown dog map popup/side profile~~
 - connect user account details link to each page
-- make quick links on top of website
-- links to unknown dog map
+- ~~make quick links on top of website~~
+- ~~links to unknown dog map~~
 - alert dog owner when user sees their dog
 - ~~add "missing since date/time" to missing profile~~
-- bootstrap that shit!
+- bootstrap that shit! Getting there!
 - user who sees missing dog should get credit on the map or something
 - ~~graphic art~~
+- in My Account add hyperlink to dogs profile page
+- Anchor nav bar to top of page on scrolling
+- On dog profile page have map next to profile instead of under
+- Have unknown dog points auto find possible profile matches
+- Allow user who added point ability to delete it.
+- add logout button
+- Notification

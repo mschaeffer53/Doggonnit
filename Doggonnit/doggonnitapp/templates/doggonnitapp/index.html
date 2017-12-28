@@ -1,20 +1,26 @@
 {% extends 'doggonnitapp/base.html' %}
 
 {% block content %}
-<h1>doggonnit</h1>
-<h2>the app for when your dog is gone</h2>
+<div class="container">
+    <div class="col">
+        <h1>Doggonnit</h1>
+        <h6>the app for when your dog is gone</h6>
+    </div>
 
-<form action="{% url 'doggonnitapp:mylogin' %}" method="POST">
-    {% csrf_token %}
+    <hr/>
 
-    <input type="text" placeholder="user name" name="user_name">
-    <input type="password" placeholder="password" name="password">
+    <div class="col">
+        <form action="{% url 'doggonnitapp:mylogin' %}" method="POST">
+            {% csrf_token %}
 
-    <button type="submit"> Sign in </button>
+            <input type="text" placeholder="user name" name="user_name">
+            <input type="password" placeholder="password" name="password">
 
-</form>
+            <button type="submit"> Sign in </button>
 
+        </form>
 
-<a href="{% url 'doggonnitapp:registrationPage' %}">Create new account</a>
-
+        <a href="{% url 'doggonnitapp:registrationPage' %}">Create new account</a>
+    </div>
+</div>
 {% endblock %}
