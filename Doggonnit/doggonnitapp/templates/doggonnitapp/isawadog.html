@@ -7,9 +7,9 @@
 </head>
 {% block content %}
 <style>
-    /*div{*/
-        /*padding-top: 5px;*/
-    /*}*/
+    .form_div{
+        padding: 5px;
+    }
 
     /*img{*/
         /*width: 250px;*/
@@ -23,7 +23,7 @@
         <h2>This is where the dog was, and what it looked like</h2>
         <h3>This will show up on the unknowndogmap</h3>
     </div>
-    <div id='map' style='width: 1100px; height: 500px;'></div>
+    <div id='map'></div>
         <script>
             mapboxgl.accessToken = '{{ mapbox_api_key }}';
             let map = new mapboxgl.Map({
@@ -73,11 +73,11 @@
 
 
 
-    <div>
+    <div class="form_div">
         <form action="{% url 'doggonnitapp:isawadog' %}" method="POST">
             {% csrf_token %}
 
-            <div>
+            <div class="form_div">
 
                 <select name="age">
                     <option selected disabled> Age </option>
@@ -113,11 +113,11 @@
 
             </div>
 
-            <div>
-                <textarea rows="5" cols="75" placeholder="description" name="description"></textarea>
+            <div class="form_div">
+                <textarea rows="5" cols="87" placeholder="...add a helpful description" name="description"></textarea>
             </div>
 
-            <button type="submit"> Submit </button>
+            <button class="form_div" type="submit"> Submit </button>
         </form>
     </div>
 </div>
