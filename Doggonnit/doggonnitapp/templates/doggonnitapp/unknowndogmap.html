@@ -1,7 +1,11 @@
-<head>
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>
-</head>
+{% extends 'doggonnitapp/base.html' %}
+<!--<head>-->
+    <!--<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>-->
+    <!--<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>-->
+<!--</head>-->
+
+
+{% block content %}
 
 <style>
     .mapboxgl-popup {
@@ -10,9 +14,9 @@
     }
 </style>
 
-<body>
-    <h1>Unknown dogs running around</h1>
-    <div id='map' style='width: 1100px; height: 600px;'></div>
+<div class="container">
+    <h3>Unknown dogs running around</h3>
+    <div id='map' style='width: 1100px; height: 500px;'></div>
     <script>
         mapboxgl.accessToken = '{{ mapbox_api_key }}';
         let map = new mapboxgl.Map({
@@ -74,6 +78,6 @@
 
     </script>
 
-</body>
+</div>
 
-
+{% endblock %}

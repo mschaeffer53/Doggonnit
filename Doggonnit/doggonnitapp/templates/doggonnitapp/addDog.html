@@ -1,82 +1,91 @@
+{% extends 'doggonnitapp/base.html' %}
+
+{% block content %}
 <style>
-    div{
+    .text_div{
         padding-top: 5px;
         padding-bottom: 5px;
     }
 </style>
 
+<div class="container">
+    <h1>Register your dog</h1>
 
-<h1>dog registration page</h1>
+    <form action="{% url 'doggonnitapp:create_dog_profile' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
 
-<form action="{% url 'doggonnitapp:create_dog_profile' %}" method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
+        <input type="text" placeholder="dog name" name="name" required value="Fido">
 
-    <input type="text" placeholder="dog name" name="name" required value="Fido">
+        <select name="age" required>
+            <option selected disabled> Age </option>
+            {% for age in ages %}
+                <option>{{age}}</option>
+            {% endfor %}
+        </select>
 
-    <select name="age" required>
-        <option selected disabled> Age </option>
-        {% for age in ages %}
-            <option>{{age}}</option>
-        {% endfor %}
-    </select>
+        <select name="sex" required>
+            <option selected disabled> Gender </option>
+            <option> Female </option>
+            <option> Male </option>
+        </select>
 
-    <select name="sex" required>
-        <option selected disabled> Gender </option>
-        <option> Female </option>
-        <option> Male </option>
-    </select>
+        <select name="breed" required>
+                <option selected disabled> Breed </option>
+                <option>Mutt</option>
+            {% for breed in breeds %}
+                <option>{{breed}}</option>
+            {% endfor %}
+        </select>
 
-    <select name="breed" required>
-            <option selected disabled> Breed </option>
-            <option>Mutt</option>
-        {% for breed in breeds %}
-            <option>{{breed}}</option>
-        {% endfor %}
-    </select>
+        <select name="color" required>
+                <option selected disabled> Color </option>
+            {% for color in colors %}
+                <option>{{color}}</option>
+            {% endfor %}
+        </select>
 
-    <select name="color" required>
-            <option selected disabled> Color </option>
-        {% for color in colors %}
-            <option>{{color}}</option>
-        {% endfor %}
-    </select>
+        <select name="pattern" required>
+                <option selected disabled> Pattern </option>
+            {% for pattern in patterns %}
+                <option>{{pattern}}</option>
+            {% endfor %}
+        </select>
 
-    <select name="pattern" required>
-            <option selected disabled> Pattern </option>
-        {% for pattern in patterns %}
-            <option>{{pattern}}</option>
-        {% endfor %}
-    </select>
+        <select name="weight" required>
+                <option selected disabled> weight(lbs) </option>
+            {% for weight in weights %}
+                <option>{{weight}}</option>
+            {% endfor %}
+        </select>
 
-    <select name="weight" required>
-            <option selected disabled> weight(lbs) </option>
-        {% for weight in weights %}
-            <option>{{weight}}</option>
-        {% endfor %}
-    </select>
+        <select name="personality" required>
+                <option selected disabled> Personality </option>
+            {% for personality in personalities %}
+                <option>{{personality}}</option>
+            {% endfor %}
+        </select>
 
-    <select name="personality" required>
-            <option selected disabled> Personality </option>
-        {% for personality in personalities %}
-            <option>{{personality}}</option>
-        {% endfor %}
-    </select>
+        <div class="text_div">
+             <textarea name="description" cols=75 rows= 5 placeholder="...describe any additional details about your dog"></textarea>
+        </div>
 
-    <div>
-         <textarea name="description" cols=50 rows= 5 placeholder="describe anything else you want"></textarea>
+
+        <input type="file" name="dog_image" accept="image/*" required>
+        <p>Upload a photo</p>
+
+        <div class="text_div">
+            <button type="submit">Add Dog</button>
+        </div>
+
+
+    </form>
+
+    <div>*All fields required except description</div>
+    <div class="col">
+        <a href="{% url 'doggonnitapp:dogmap' %}">Skip this and go to Dog Map</a>
     </div>
-
-    <input type="file" name="dog_image" accept="image/*" required>
-
-    <div>
-        <button type="submit">Add Dog</button>
+    <div class="col">
+        <a href="{% url 'doggonnitapp:myaccount' %}">My account</a>
     </div>
-
-
-</form>
-
-<div>*all fields required (except description)</div>
-
-<a href="{% url 'doggonnitapp:dogmap' %}">Skip this and go to dog map</a>
-
-<a href="{% url 'doggonnitapp:myaccount' %}">My account</a>
+</div>
+{% endblock %}
