@@ -13,15 +13,15 @@
 
     <h5>My dogs</h5>
     <hr/>
-    <div class="col">
+    <div class="row">
     {% for dog in dogs %}
-        <div>{{dog.name.upper}}</div>
-        <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
-        <hr/>
+        <div class="col">
+            <div>{{dog.name.upper}}</div>
+            <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+        </div>
     {% endfor %}
-
     </div>
-
+    <hr/>
     <h5>My points</h5>
     {{profile.points}}
 </div>
