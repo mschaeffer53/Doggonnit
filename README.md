@@ -140,3 +140,4 @@ A basic account will let you:
 - Allow user who added point ability to delete it.
 - add logout button
 - Notification
+- Not NULL error when creating new dog profile

@@ -16,8 +16,11 @@
     <div class="row">
     {% for dog in dogs %}
         <div class="col">
-            <div>{{dog.name.upper}}</div>
+            <!--<div>{{dog.name.upper}}</div>-->
+
+            <a href="{% url 'doggonnitapp:dog_profile' dog.id %}" class="col">{{dog.name.upper}}</a>
             <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+
         </div>
     {% endfor %}
     </div>

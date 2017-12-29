@@ -1,8 +1,4 @@
 {% extends 'doggonnitapp/base.html' %}
-<head>
-    <!--<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>-->
-    <!--<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>-->
-</head>
 
 {% block content %}
 <style>
@@ -29,102 +25,122 @@
     }
 
     #map{
-        border: 3px solid lightseagreen;
+        border: 3px solid lightseagreen;;
+        margin-top: 16px;
     }
 
-
-
+    .textbox{
+        padding-bottom: 4px;
+    }
 </style>
 
 
 <div class="container">
-    <div class="col">
+    <div class="row">
+        <div class="col">
 
-        {% if dog.dog_is_lost  %}
-            <h1>**MISSING**</h1>
-            <h3>Missing since: {{dog.missing_since}}</h3>
-        {% endif %}
+            {% if dog.dog_is_lost  %}
+                <h1>**MISSING**</h1>
+                <h3>Missing since: {{dog.missing_since}}</h3>
+            {% endif %}
 
-        <h3> {{ dog.name.upper }} </h3>
+            <h3> {{ dog.name.upper }} </h3>
 
-        <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+            <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
 
-        <div class="container">
-            <div> Age : {{dog.age}} </div>
-            <div> Gender : {{dog.sex}} </div>
-            <div> Breed : {{dog.breed}} </div>
-            <div> Color : {{dog.color}} </div>
-            <div> Pattern : {{dog.pattern}} </div>
-            <div> Weight : {{dog.weight}} lbs </div>
-            <div> Personality : {{dog.personality}} </div>
-            <div> Description : {{dog.description}} </div>
+            <div class="container">
+                <div> Age : {{dog.age}} </div>
+                <div> Gender : {{dog.sex}} </div>
+                <div> Breed : {{dog.breed}} </div>
+                <div> Color : {{dog.color}} </div>
+                <div> Pattern : {{dog.pattern}} </div>
+                <div> Weight : {{dog.weight}} lbs </div>
+                <div> Personality : {{dog.personality}} </div>
+                <div> Description : {{dog.description}} </div>
+            </div>
+
+
+            <form action="{% url 'doggonnitapp:dog_profile' dog.id %}" method="POST">
+                {% csrf_token %}
+                {% if dog.dog_is_lost  %}
+                    <button type="submit"> Report as found! </button>
+                    {% else %}
+                        <button type="submit"> Report as missing </button>
+                {% endif %}
+            </form>
         </div>
 
+    {% if dog.dog_is_lost %}
+        <div class="col">
+            <div id='map' style='width: 600px; height: 500px;'>
 
-        <form action="{% url 'doggonnitapp:dog_profile' dog.id %}" method="POST">
-            {% csrf_token %}
-            {% if dog.dog_is_lost  %}
-                <button type="submit"> Report as found! </button>
-                {% else %}
-                    <button type="submit"> Report as missing </button>
-            {% endif %}
-        </form>
-    </div>
-
-{% if dog.dog_is_lost %}
-    <div class="col">
-        <div id='map' style='width: 600px; height: 500px;'>
-
-            <script>
-                //home coordinates for dog
-                let lat = {{ profile.latitude }};
-                let lng = {{ profile.longitude }};
-                let home_coordinates = [lng, lat];
+                <script>
+                    //home coordinates for dog
+                    let lat = {{ profile.latitude }};
+                    let lng = {{ profile.longitude }};
+                    let home_coordinates = [lng, lat];
 
 
-                //add new map
-                mapboxgl.accessToken = '{{ mapbox_api_key }}';
-                let map = new mapboxgl.Map({
-                    container: 'map',
-                    style: 'mapbox://styles/mapbox/streets-v9',
-                    center: home_coordinates,
-                    zoom: 10
-                });
+                    //add new map
+                    mapboxgl.accessToken = '{{ mapbox_api_key }}';
+                    let map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v9',
+                        center: home_coordinates,
+                        zoom: 10
+                    });
 
-                //add map features
-                map.addControl(new mapboxgl.GeolocateControl({
-                    positionOptions: {
-                        enableHighAccuracy: true
-                        },
-                        trackUserLocation: true
-                }));
+                    //add map features
+                    map.addControl(new mapboxgl.GeolocateControl({
+                        positionOptions: {
+                            enableHighAccuracy: true
+                            },
+                            trackUserLocation: true
+                    }));
 
-                map.addControl(new mapboxgl.FullscreenControl());
+                    map.addControl(new mapboxgl.FullscreenControl());
 
-                let nav = new mapboxgl.NavigationControl();
-                map.addControl(nav, 'top-left');
+                    let nav = new mapboxgl.NavigationControl();
+                    map.addControl(nav, 'top-left');
 
-                //create new marker for missing dog's home
-                function new_lost_marker(lng, lat, el=undefined){
-                    return new mapboxgl.Marker(el)
-                        .setLngLat([lng, lat])
-                        .addTo(map);
-                }
+                    //create new marker for missing dog's home
+                    function new_lost_marker(lng, lat, el=undefined){
+                        return new mapboxgl.Marker(el)
+                            .setLngLat([lng, lat])
+                            .addTo(map);
+                    }
 
-                let div = document.createElement('div');
-                div.className = 'marker_div';
+                    let div = document.createElement('div');
+                    div.className = 'marker_div';
 
-                new_lost_marker(lng, lat, div)
+                    new_lost_marker(lng, lat, div)
 
+                </script>
 
-            </script>
+            </div>
+                    <div class="col">
+            <a href="{% url 'doggonnitapp:dogmap' %}">Go to map of all missing dogs</a>
+        </div>
+            <form action="{% url 'doggonnitapp:irecognizethatdog' dog.pk %}" method="POST">
+                {% csrf_token %}
+
+                <div class="col textbox">
+                    <textarea rows="3" cols="75" placeholder="description/bonus details" name="description"></textarea>
+                </div>
+
+                <input type="hidden" name="lat" id="lat">
+                <input type="hidden" name="lng" id="lng">
+
+                <div class="col">
+                    <button type="submit">I saw this dog!</button>
+                </div>
+            </form>
+
         </div>
     </div>
 {% endif %}
-    <div class="container">
-        <div class="col">
-            <a href="{% url 'doggonnitapp:dogmap' %}">Go to map of all missing dogs</a>
-        </div>
+
+
         <script>
             //add markers on click
             let marker;
@@ -197,21 +213,7 @@
 
         </script>
 
-        <form action="{% url 'doggonnitapp:irecognizethatdog' dog.pk %}" method="POST">
-            {% csrf_token %}
 
-            <div class="col">
-                <textarea rows="5" cols="75" placeholder="description/bonus details" name="description"></textarea>
-            </div>
-
-            <input type="hidden" name="lat" id="lat">
-            <input type="hidden" name="lng" id="lng">
-
-            <div class="col">
-                <button type="submit">I saw this dog!</button>
-            </div>
-        </form>
-    </div>
 <!--Add line connecting markers-->
     <script>
         map.on('load', function () {
