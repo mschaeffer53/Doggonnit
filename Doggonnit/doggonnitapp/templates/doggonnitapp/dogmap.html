@@ -109,8 +109,8 @@
                 <div class="dogs col">
 
                     <h1 class="missing">**MISSING**</h1>
-
-                    <a href="{% url 'doggonnitapp:dog_profile' dog.id %}" class="row">Help find {{dog.name.upper}}</a>
+                    <div class="row">
+                    <a href="{% url 'doggonnitapp:dog_profile' dog.id %}" class="col text-center">Help find {{dog.name.upper}}</a></div>
                     <!--<h3> {{ dog.name.upper }} </h3>-->
 
                     <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
