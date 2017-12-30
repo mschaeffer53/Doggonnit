@@ -11,7 +11,7 @@
     .mapboxgl-popup {
         max-width: 400px;
         font: 14px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-        border: 2px solid lightgreen;
+        /*border: 2px solid lightgreen;*/
     }
 </style>
 
@@ -45,7 +45,7 @@
                 .setLngLat([lng, lat])
                 .addTo(map);
             if (title) {
-                marker.setPopup(new mapboxgl.Popup({ offset: 25 })
+                marker.setPopup(new mapboxgl.Popup({ offset: 20 })
                     .setHTML('<h3>' + title + '</h3><p>' + time + '</p>' + '<p>' + breed + '</p>' + '<p>' + color + '</p>' + '<p>' + age + '</p>'
                     + '<p>' + weight + '</p>' + '<p>' + description + '</p>'))
                     .addTo(map);
@@ -53,13 +53,10 @@
         }
 
 
-
-
         {% for marker in markers %}
             {% if marker.description != '' %};
             new_lost_marker({{marker.long}}, {{marker.lat}}, 'MISSING DOG', "Reported: {{marker.timestamp}}", "Color: {{marker.color}}",
         "Age: {{marker.age}}", "Weight: {{marker.weight}}", "Breed: {{marker.breed}}", "Description: {{marker.description}}");
-
 
 
             {% else %}

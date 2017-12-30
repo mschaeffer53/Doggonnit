@@ -102,8 +102,8 @@ def create_dog_profile(request):
                'breeds': breeds,
                'colors': colors,
                 'personalities': personalities,
-               'patterns':patterns,
-               'ages':ages}
+               'patterns': patterns,
+               'ages': ages}
 
     if request.method == 'POST':
         dog_name = request.POST['name']
@@ -139,9 +139,9 @@ def dog_profile(request, dog_id):
         dog.missing_since = timezone.now()
         dog.save()
 
-    context = {'dog':dog,
+    context = {'dog': dog,
                'mapbox_api_key': secret.mapbox_api_key,
-               'profile':profile}
+               'profile': profile}
 
 
     return render(request, 'doggonnitapp/dog_profile.html', context)
@@ -278,11 +278,6 @@ def irecognizethatdog(request, dog_id):
     #
 
     return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
-
-# TODO:
-# Create a view that takes a dog_id as an argument
-# Goto the db and find all missingdogreports with that dog_id
-# Return a JSON list back to the client
 
 
 def dogprofilemap(request, dog_id):
