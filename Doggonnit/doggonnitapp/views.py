@@ -134,11 +134,19 @@ def create_dog_profile(request):
 def dog_profile(request, dog_id):
     dog = DogProfile.objects.get(pk=dog_id)
     profile = get_object_or_404(UserProfile, user=dog.user)
+    current_user = request.user.username
+    dog_owner = dog.user
+    print(dog_owner)
+    print(current_user)
     if request.method == 'POST':
-        dog.dog_is_lost = not dog.dog_is_lost
-        dog.missing_since = timezone.now()
-        dog.save()
-
+        if dog_owner == current_user:  #trying to only do this if the dog belongs to the user
+            print(dog.user)
+            print(current_user)
+            dog.dog_is_lost = not dog.dog_is_lost
+            dog.missing_since = timezone.now()
+            dog.save()
+        else: #alert the dog owner with email or give the contact info
+            print('notify owner')
     context = {'dog': dog,
                'mapbox_api_key': secret.mapbox_api_key,
                'profile': profile}
@@ -273,7 +281,7 @@ def irecognizethatdog(request, dog_id):
     #     'Here is the message.',
     #     'doggoneitapp@gmail.com',
     #     ['mschaeffer53@gmail.com'],
-    #     fail_silently=True,
+    #     fail_silently=False,
     # )
     #
 

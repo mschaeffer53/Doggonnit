@@ -1,127 +1,132 @@
 {% extends 'doggonnitapp/base.html' %}
 
-<head>
-    <!--<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>-->
-    <!--<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>-->
 
-</head>
 {% block content %}
 <style>
     .form_div{
         padding: 5px;
     }
-
-    /*img{*/
-        /*width: 250px;*/
-        /*height: 250px;*/
-    /*}*/
 </style>
 
 <div class="container">
-    <div class="container">
-        <h1>I saw an unidentified lost dog</h1>
-        <h6>To get started: Click on the map to mark where you saw the dog. Then add details below.</h6>
-    </div>
-
-
-    <div id='map'></div>
-        <script>
-            mapboxgl.accessToken = '{{ mapbox_api_key }}';
-            let map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v9',
-                center: [-122.667, 45.523],
-                zoom: 10
-            });
-            map.addControl(new mapboxgl.GeolocateControl({
-                positionOptions: {
-                    enableHighAccuracy: true
-                },
-                trackUserLocation: true
-            }));
-
-            map.addControl(new mapboxgl.FullscreenControl());
-
-            let nav = new mapboxgl.NavigationControl();
-            map.addControl(nav, 'top-left');
-
-
-            function new_lost_marker(x, y){
-                return new mapboxgl.Marker()
-                    .setLngLat([x, y])
-                    .addTo(map);
-            }
-
-    //add markers on click
-            let marker;
-            map.on('click', function (e) {
-                let lat = e.lngLat.lat;
-                let lng = e.lngLat.lng;
-                remove_marker(marker);
-                marker = new_lost_marker(lng, lat);
-                document.getElementById('lat').value = lat;
-                document.getElementById('lng').value = lng;
-            });
-
-    //remove marker if a previous one exists
-            function remove_marker(marker) {
-                if (marker !== undefined) {
-                    marker.remove();
-                }
-            };
-
-        </script>
-
     <div>
-        <h7>Look at the <a href="{% url 'doggonnitapp:dogmap' %}">Dog Map</a> to see if the dog was already reported missing.</h7>
+        <h1>I saw an unidentified lost dog</h1>
+        <h6>To get started: Click on the map to mark where you saw the dog. Then add details.</h6>
     </div>
 
-    <div class="form_div">
-        <form action="{% url 'doggonnitapp:isawadog' %}" method="POST">
-            {% csrf_token %}
+    <div class="row">
+        <div class="col">
+            <div id='map' style='width: 600px; height: 500px;'></div>
+                <script>
+                    mapboxgl.accessToken = '{{ mapbox_api_key }}';
+                    let map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/streets-v9',
+                        center: [-122.667, 45.523],
+                        zoom: 10
+                    });
+                    map.addControl(new mapboxgl.GeolocateControl({
+                        positionOptions: {
+                            enableHighAccuracy: true
+                        },
+                        trackUserLocation: true
+                    }));
 
-            <div class="form_div">
+                    map.addControl(new mapboxgl.FullscreenControl());
 
-                <select name="age">
-                    <option selected disabled> Age </option>
-                    {% for age in ages %}
-                        <option>{{age}}</option>
-                    {% endfor %}
-                </select>
+                    let nav = new mapboxgl.NavigationControl();
+                    map.addControl(nav, 'top-left');
 
-                <select name="weight">
-                    <option selected disabled> Size </option>
-                    {% for weight in weights %}
-                        <option>{{weight}}</option>
-                    {% endfor %}
-                </select>
 
-                <select name="breed">
-                    <option selected disabled> Breed </option>
-                    <option>Unknown</option>
-                    {% for breed in breeds %}
-                        <option>{{breed}}</option>
-                    {% endfor %}
-                </select>
+                    function new_lost_marker(x, y){
+                        return new mapboxgl.Marker()
+                            .setLngLat([x, y])
+                            .addTo(map);
+                    }
 
-                <select name="color">
-                    <option selected disabled> Color </option>
-                    {% for color in colors %}
-                        <option>{{color}}</option>
-                    {% endfor %}
-                </select>
+            //add markers on click
+                    let marker;
+                    map.on('click', function (e) {
+                        let lat = e.lngLat.lat;
+                        let lng = e.lngLat.lng;
+                        remove_marker(marker);
+                        marker = new_lost_marker(lng, lat);
+                        document.getElementById('lat').value = lat;
+                        document.getElementById('lng').value = lng;
+                    });
 
-                <input type="hidden" name="lat" id="lat">
-                <input type="hidden" name="lng" id="lng">
+            //remove marker if a previous one exists
+                    function remove_marker(marker) {
+                        if (marker !== undefined) {
+                            marker.remove();
+                        }
+                    };
 
+                </script>
+
+            <div>
+                <h7>Look at the <a href="{% url 'doggonnitapp:dogmap' %}">Dog Map</a> to see if the dog was already reported missing.</h7>
             </div>
+        </div>
 
-            <div class="form_div">
-                <textarea rows="5" cols="87" placeholder="...add a helpful description" name="description"></textarea>
-            </div>
+        <div class="col">
+            <form action="{% url 'doggonnitapp:isawadog' %}" method="POST">
+                {% csrf_token %}
 
-            <button class="form_div" type="submit"> Submit </button>
-        </form>
+                <div class="form_div">
+                    <div class="row form_div">
+                        <select name="color">
+                            <option selected disabled> Color </option>
+                            {% for color in colors %}
+                                <option>{{color}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row form_div">
+                        <select name="weight">
+                            <option selected disabled> Size </option>
+                            {% for weight in weights %}
+                                <option>{{weight}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row form_div">
+                        <select name="age">
+                            <option selected disabled> Age </option>
+                            {% for age in ages %}
+                                <option>{{age}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="row form_div">
+                        <select name="breed">
+                            <option selected disabled> Breed </option>
+                            <option>Unknown</option>
+                            {% for breed in breeds %}
+                                <option>{{breed}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+
+
+                        <input type="hidden" name="lat" id="lat">
+                        <input type="hidden" name="lng" id="lng">
+
+                    </div>
+
+                    <div class="row form_div">
+                        <textarea rows="5" cols="55" placeholder="...add a helpful description" name="description"></textarea>
+                    </div>
+
+                    <div class="row form_div">
+                        <button type="submit"> Submit </button>
+                    </div>
+            </form>
+        </div>
     </div>
 </div>
 {% endblock %}
