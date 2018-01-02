@@ -134,7 +134,7 @@ def create_dog_profile(request):
 def dog_profile(request, dog_id):
     dog = DogProfile.objects.get(pk=dog_id)
     profile = get_object_or_404(UserProfile, user=dog.user)
-    current_user = request.user.username
+    current_user = request.user
     dog_owner = dog.user
     print(dog_owner)
     print(current_user)
@@ -276,14 +276,14 @@ def irecognizethatdog(request, dog_id):
     )
     missing_dog_report.save()
 
-    # send_mail(
-    #     'Someone saw your dog!',
-    #     'Here is the message.',
-    #     'doggoneitapp@gmail.com',
-    #     ['mschaeffer53@gmail.com'],
-    #     fail_silently=False,
-    # )
-    #
+    send_mail(
+        'Someone saw your dog!',
+        'Here is the message.',
+        'doggoneitapp@gmail.com',
+        ['mschaeffer53@gmail.com'],
+        fail_silently=False,
+    )
+
 
     return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
 
