@@ -211,7 +211,7 @@
             let coordinates_array = [];
             {% for dog_marker in dog.missingdogreport_set.all %}
             console.log('{{dog_marker.timestamp}}');
-            new_lost_marker({{dog_marker.long}}, {{dog_marker.lat}}, undefined, '{{dog_marker.timestamp}}');
+            new_lost_marker({{dog_marker.long}}, {{dog_marker.lat}}, undefined, '<h5>{{dog_marker.timestamp}}</h5>  <p><h6>{{dog_marker.description}}</h6></p>');
             coordinates_array.push([{{dog_marker.long}}, {{dog_marker.lat}}]);
             {% endfor %}
             coordinates_array.unshift(home_coordinates);
