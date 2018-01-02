@@ -297,6 +297,7 @@ def irecognizethatdog(request, dog_id):
     return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
 
 
+#map of an individual missing dog
 def dogprofilemap(request, dog_id):
 
     dog = DogProfile.objects.get(pk=dog_id)

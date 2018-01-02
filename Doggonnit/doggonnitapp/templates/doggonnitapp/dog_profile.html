@@ -113,10 +113,28 @@
                     map.addControl(nav, 'top-left');
 
                     //create new marker for missing dog's home
-                    function new_lost_marker(lng, lat, el=undefined){
-                        return new mapboxgl.Marker(el)
+                    function new_lost_marker(lng, lat, el=undefined, msg=undefined) {
+                        let popup = new mapboxgl.Popup({
+                            closeButton: false,
+                            closeOnClick: false
+                        })
+                            .setHTML(msg);
+
+                        let marker = new mapboxgl.Marker(el)
                             .setLngLat([lng, lat])
+                            .setPopup(popup)
                             .addTo(map);
+
+                        marker.getElement().onmouseenter = function(e) {
+                            marker.togglePopup();
+                        };
+
+                        marker.getElement().onmouseleave = function(e) {
+                            marker.togglePopup();
+                        };
+
+
+                        return marker;
                     }
 
                     let div = document.createElement('div');
@@ -149,6 +167,19 @@
     </div>
 {% endif %}
 
+        <script>
+
+
+//        map.on('mouseenter', 'route', function(e) {
+//            console.log(e.target);
+//            e.target.togglePopup();
+//        });
+//
+//        map.on('mouseleave', 'route', function() {
+//            e.target.togglePopup();
+//        });
+
+        </script>
 
         <script>
             //add markers on click
@@ -180,7 +211,7 @@
             let coordinates_array = [];
             {% for dog_marker in dog.missingdogreport_set.all %}
             console.log('{{dog_marker.timestamp}}');
-            new_lost_marker({{dog_marker.long}}, {{dog_marker.lat}});
+            new_lost_marker({{dog_marker.long}}, {{dog_marker.lat}}, undefined, '{{dog_marker.timestamp}}');
             coordinates_array.push([{{dog_marker.long}}, {{dog_marker.lat}}]);
             {% endfor %}
             coordinates_array.unshift(home_coordinates);
