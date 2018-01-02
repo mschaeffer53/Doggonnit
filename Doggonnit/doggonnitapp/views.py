@@ -276,11 +276,20 @@ def irecognizethatdog(request, dog_id):
     )
     missing_dog_report.save()
 
+#prepare info for email
+    dog_name = dog.name
+    email_list = ['mschaeffer53@gmail.com', 'doggoneitapp@gmail.com']
+    user_email = dog.user.email
+    email_list.append(user_email)
+    print(user_email)
+    #add hyperlink to the actual map
+
+#send email to the owner of missing dog when someone adds a new point to the dog profile map
     send_mail(
-        'Someone saw your dog!',
-        'Here is the message.',
+        'Someone saw ' + dog_name + '!',
+        'Another user said they saw your dog. Go check the map for the most recent location.', #add hyperlink
         'doggoneitapp@gmail.com',
-        ['mschaeffer53@gmail.com'],
+        email_list,
         fail_silently=False,
     )
 
