@@ -153,16 +153,16 @@ def dog_profile(request, dog_id):
     email_list.append(owner_email)
     print(user_email)
     print(owner_email)
-    dog_owner = dog.user.username
 
 
     if request.method == 'POST':
-        if dog_owner == current_user:  #trying to only do this if the dog belongs to the user
+        if dog_owner == current_user:  #only do this if the dog belongs to the user
             print(dog.user)
             print(current_user)
             dog.dog_is_lost = not dog.dog_is_lost
             dog.missing_since = timezone.now()
             dog.save()
+            MissingDogReport.objects.filter(dog=dog).delete() #when dog is found delete missing markers
         else: #alert the dog owner with email or give the contact info
             print('notify owner')
             # send email to the owner of missing dog when someone adds a new point to the dog profile map
