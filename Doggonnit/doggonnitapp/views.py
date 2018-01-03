@@ -142,6 +142,20 @@ def dog_profile(request, dog_id):
     dog_owner = dog.user
     print(dog_owner)
     print(current_user)
+
+    # prepare info for email
+    dog_name = dog.name
+    email_list = ['doggoneitapp@gmail.com']
+
+    user_email = current_user.email
+    owner_email = dog.user.email
+    email_list.append(user_email)
+    email_list.append(owner_email)
+    print(user_email)
+    print(owner_email)
+    dog_owner = dog.user.username
+
+
     if request.method == 'POST':
         if dog_owner == current_user:  #trying to only do this if the dog belongs to the user
             print(dog.user)
@@ -151,6 +165,19 @@ def dog_profile(request, dog_id):
             dog.save()
         else: #alert the dog owner with email or give the contact info
             print('notify owner')
+            # send email to the owner of missing dog when someone adds a new point to the dog profile map
+            send_mail(
+                'Someone found ' + dog_name + '!',
+                '',  # using html_message instead of plain/text
+                'doggoneitapp@gmail.com',
+                email_list,
+                fail_silently=False,
+                html_message=f'Hello {dog_owner} and {current_user}! I think we have found a match!'
+                             f' {current_user} says they have found {dog_name}. Now it is up to the two of you to do the rest.'
+                             f'{dog_owner}, once you get your dog back remember to update {dog_name}\'s profile to let '
+                             f'everyone know they can stop looking.'
+
+            )
     context = {'dog': dog,
                'mapbox_api_key': secret.mapbox_api_key,
                'profile': profile}
@@ -282,7 +309,7 @@ def irecognizethatdog(request, dog_id):
 
 #prepare info for email
     dog_name = dog.name
-    email_list = ['mschaeffer53@gmail.com', 'doggoneitapp@gmail.com']
+    email_list = ['doggoneitapp@gmail.com']
     user_email = dog.user.email
     email_list.append(user_email)
     print(user_email)

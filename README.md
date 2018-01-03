@@ -123,7 +123,7 @@ A basic account will let you:
 ##todos and thoughts
 - ~~make line color gradient~~
 - add points for reward system
-- delete sightings when dog is found
+- delete markers/sightings when dog is found
 - ~~add more details to unknown dog map popup/side profile~~
 - ~~connect user account details link to each page~~
 - ~~make quick links on top of website~~
