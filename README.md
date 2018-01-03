@@ -142,4 +142,4 @@ A basic account will let you:
 - Notifications
 - Link to map in emails (views>def irecognizethatdog)
 - ~~Not NULL error when creating new dog profile~~
-- Popups with timestamp and description/details on the dog profile map
+- ~~Popups with timestamp and description/details on the dog profile map~~

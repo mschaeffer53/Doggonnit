@@ -1,9 +1,4 @@
 {% extends 'doggonnitapp/base.html' %}
-<!--<head>-->
-    <!--<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>-->
-    <!--<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>-->
-<!--</head>-->
-
 
 {% block content %}
 
@@ -11,7 +6,13 @@
     .mapboxgl-popup {
         max-width: 400px;
         font: 14px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
-        /*border: 2px solid lightgreen;*/
+        background-color: rgba(0, 0, 0, .8);
+        color: lightseagreen;
+        border-radius: 5%;
+    }
+
+    .mapboxgl-popup-content {
+    background: transparent;
     }
 </style>
 

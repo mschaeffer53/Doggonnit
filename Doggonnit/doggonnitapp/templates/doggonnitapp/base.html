@@ -54,9 +54,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'doggonnitapp:create_dog_profile' %}">Register your Dog</a>
                 </li>
+
+                {% if not request.user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'doggonnitapp:index' %}">Sign in</a>
+                    <a class="nav-link" href="{% url 'doggonnitapp:index' %}">Login</a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'doggonnitapp:mylogout' %}">Logout</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </nav>

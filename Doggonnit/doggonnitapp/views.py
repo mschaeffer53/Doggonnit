@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.utils import timezone
@@ -12,14 +11,14 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
 from django.core.mail import send_mail
+from . import secret
 
 #example of json
 def test(request):
     return JsonResponse({chr(i + 96) : i for i in range(26)})
 
-
 import json, requests
-from . import secret
+
 
 def get_latlng(address, city, state):
     full_address = ', '.join([address, city, state])
@@ -60,6 +59,11 @@ def mylogin(request):
         return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
     else:
         return HttpResponse('invalid credentials')
+
+#logout
+def mylogout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('doggonnitapp:index'))
 
 #create new user
 def create_user_profile(request):
