@@ -10,7 +10,7 @@ from django.core.files import File
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from . import secret
 
 #example of json
@@ -286,15 +286,21 @@ def irecognizethatdog(request, dog_id):
     user_email = dog.user.email
     email_list.append(user_email)
     print(user_email)
-    #add hyperlink to the actual map
+    dog_owner = dog.user.username
+    nl ='\\n' #this isnt working
 
-#send email to the owner of missing dog when someone adds a new point to the dog profile map
+    #address to dog profile
+    map_address = 'http://' + request.get_host() + reverse('doggonnitapp:dog_profile', kwargs={'dog_id': dog_id})
+
+    #send email to the owner of missing dog when someone adds a new point to the dog profile map
     send_mail(
         'Someone saw ' + dog_name + '!',
-        'Another user said they saw your dog. Go check the map for the most recent location.', #add hyperlink
+        '', #using html_message instead of plain/text
         'doggoneitapp@gmail.com',
         email_list,
         fail_silently=False,
+        html_message=f'Hello {dog_owner}. Another user said they saw your dog. Go check the <a href="{map_address}">MAP</a> for the most recent location.'
+                     f'{nl}Good Luck!'
     )
 
 

@@ -131,6 +131,7 @@ A basic account will let you:
 - ~~alert dog owner when user sees their dog~~
 - ~~add "missing since date/time" to missing profile~~
 - bootstrap that shit! Getting there!
+- Fix second row of profiles on dog map
 - user who sees missing dog should get credit on the map or something
 - ~~graphic art~~
 - ~~in My Account add hyperlink to dogs profile page~~
@@ -138,8 +139,10 @@ A basic account will let you:
 - ~~On dog profile page have map next to profile instead of under~~
 - Have unknown dog points auto find possible profile matches
 - Allow user who added point ability to delete it.
-- add logout button
+- ~~add logout button~~
 - Notifications
-- Link to map in emails (views>def irecognizethatdog)
+- When user adds a marker they should be told that the dog owner was emailed.
+- ~~Link to map in emails (views>def irecognizethatdog)~~
 - ~~Not NULL error when creating new dog profile~~
 - ~~Popups with timestamp and description/details on the dog profile map~~
+- get newlines to work in emails
