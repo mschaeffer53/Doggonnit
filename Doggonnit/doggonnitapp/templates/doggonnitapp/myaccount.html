@@ -1,13 +1,6 @@
 {% extends 'doggonnitapp/base.html' %}
 {% block content %}
-<!--<style>-->
-    <!--img{-->
-        <!--width:500px;-->
-    <!--}-->
-    <!--div{-->
-        <!--font-size:24px;-->
-    <!--}-->
-<!--</style>-->
+
 <div class="container">
     <h1>My account</h1>
 
@@ -19,7 +12,8 @@
             <!--<div>{{dog.name.upper}}</div>-->
 
             <a href="{% url 'doggonnitapp:dog_profile' dog.id %}" class="col">{{dog.name.upper}}</a>
-            <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+            <!--<img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />-->
+            <div class="dog_img" style="background: url({{MEDIA_URL}}{{ dog.dog_image }}) 50% 50% no-repeat; width:250px; height:250px; background-size: cover"></div>
 
         </div>
     {% endfor %}

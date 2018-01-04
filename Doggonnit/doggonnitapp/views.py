@@ -294,12 +294,14 @@ def isawadog(request):
         missing_dog_report.save()
 
         #add random amount of biscuits to user account
-        random_num = random.randint(1, 25)
-        print(random_num)
-        current_user = request.user
-        current_user_profile = get_object_or_404(UserProfile, user=current_user)
-        current_user_profile.points += 1000*random_num
-        current_user_profile.save()
+        # random_num = random.randint(1, 25)
+        # print(random_num)
+        # current_user = request.user
+        # current_user_profile = get_object_or_404(UserProfile, user=current_user)
+        # current_user_profile.points += 1000*random_num
+        # current_user_profile.save()
+
+        addbiscuits(request.user, 1000 * random.randint(1, 25))
 
         return HttpResponseRedirect(reverse('doggonnitapp:unknowndogmap')) #go do unknowndog map after submitting form
     return render(request, 'doggonnitapp/isawadog.html', context)
@@ -349,12 +351,19 @@ def irecognizethatdog(request, dog_id):
     )
 
     #add biscuits to user account
-    current_user = request.user
-    current_user_profile = get_object_or_404(UserProfile, user=current_user)
-    current_user_profile.points += 250
-    current_user_profile.save()
+    # current_user = request.user
+    # current_user_profile = get_object_or_404(UserProfile, user=current_user)
+    # current_user_profile.points += 250
+    # current_user_profile.save()
+    addbiscuits(request.user, 250)
 
     return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
+
+def addbiscuits(user, points):
+    current_user = user
+    current_user_profile = get_object_or_404(UserProfile, user=current_user)
+    current_user_profile.points += points
+    current_user_profile.save()
 
 
 #map of an individual missing dog

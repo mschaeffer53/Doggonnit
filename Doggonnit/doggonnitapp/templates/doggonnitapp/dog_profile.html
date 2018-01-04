@@ -60,7 +60,8 @@
 
             <h3> {{ dog.name.upper }} </h3>
 
-            <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+            <!--<img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />-->
+            <div class="dog_img" style="background: url({{MEDIA_URL}}{{ dog.dog_image }}) 50% 50% no-repeat; width:250px; height:250px; background-size: cover"></div>
 
             <div class="container">
                 <div> Age : {{dog.age}} </div>

@@ -7,21 +7,12 @@
 </head>
 {% block content %}
     <style>
-        /*div{*/
-            /*padding-top: 5px;*/
-        /*}*/
-
-        .dog_img{
-            width: 250px;
-            height: 250px;
-        }
-
-        .profile_container{
+        .profile_container {
             display: flex;
             justify-content: space-between;
         }
 
-        a{
+        #dog_name {
             font-size: 24px;
         }
 
@@ -37,15 +28,15 @@
 
         }
 
-        #map{
+        #map {
             border: 3px solid lightseagreen;
         }
 
-        .dogs{
+        .dogs {
             border: 1px solid darkcyan;
         }
 
-        .missing{
+        .missing {
             color: mediumslateblue;
         }
     </style>
@@ -110,10 +101,11 @@
 
                     <h1 class="missing">**MISSING**</h1>
                     <div class="row">
-                    <a href="{% url 'doggonnitapp:dog_profile' dog.id %}" class="col text-center">Help find {{dog.name.upper}}</a></div>
+                    <a id="dog_name" href="{% url 'doggonnitapp:dog_profile' dog.id %}" class="col text-center">Help find {{dog.name.upper}}</a></div>
                     <!--<h3> {{ dog.name.upper }} </h3>-->
 
-                    <img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />
+                    <!--<img class="dog_img" src="{{MEDIA_URL}}{{ dog.dog_image }}" />-->
+                    <div class="dog_img" style="background: url({{MEDIA_URL}}{{ dog.dog_image }}) 50% 50% no-repeat; width:250px; height:250px; background-size: cover"></div>
 
                     <div class="info_container">
 
