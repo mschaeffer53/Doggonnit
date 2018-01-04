@@ -122,7 +122,7 @@ A basic account will let you:
 
 ##todos and thoughts
 - ~~make line color gradient~~
-- add points for reward system
+- ~~add points for reward system~~
 - ~~delete markers/sightings when dog is found~~
 - ~~add more details to unknown dog map popup/side profile~~
 - ~~connect user account details link to each page~~
@@ -145,5 +145,10 @@ A basic account will let you:
 - ~~Link to map in emails (views>def irecognizethatdog)~~
 - ~~Not NULL error when creating new dog profile~~
 - ~~Popups with timestamp and description/details on the dog profile map~~
-- get newlines to work in emails
+- ~~get newlines to work in emails~~
 - get rid of popup that is "undefined" on the dog profile map pic
+- clicking the logo should redirect to the dogmap or index page
+- about page???
+- ~~add unknown dog and have it redirect to unknown dog map~~
+- bitcoin qr code thing
+- test app

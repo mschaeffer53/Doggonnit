@@ -2,9 +2,8 @@
 
 {% block content %}
 <style>
-    /*.container img {*/
-        /*width:150px;*/
-        /*padding-bottom: 5px;*/
+    /*.dog_img {*/
+        /*width:250px;*/
     /*}*/
 
     .container h3 {
@@ -94,7 +93,6 @@
                     let lat = {{ profile.latitude }};
                     let lng = {{ profile.longitude }};
                     let home_coordinates = [lng, lat];
-
 
                     //add new map
                     mapboxgl.accessToken = '{{ mapbox_api_key }}';
@@ -189,7 +187,6 @@
             });
 
 
-
             //remove marker if a previous one exists currently not working
             function remove_marker(marker) {
                 if (marker !== undefined) {
@@ -243,15 +240,12 @@
                 features.push(feature)
             }
 
-
         </script>
 
 
 <!--Add line connecting markers-->
     <script>
         map.on('load', function () {
-
-
             map.addLayer({
                 "id": "route",
                 "type": "line",
@@ -274,11 +268,8 @@
                         'property': 'color'
                     }
                 }
-
-
             });
         });
-
     </script>
 
 </div>

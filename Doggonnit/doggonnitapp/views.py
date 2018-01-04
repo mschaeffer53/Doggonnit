@@ -2,6 +2,7 @@ from django.shortcuts import render, reverse, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.utils import timezone
 from django.contrib.auth import authenticate, login, logout
+import random
 
 
 from .models import UserProfile, DogProfile, MissingDogReport
@@ -172,12 +173,19 @@ def dog_profile(request, dog_id):
                 'doggoneitapp@gmail.com',
                 email_list,
                 fail_silently=False,
-                html_message=f'Hello {dog_owner} and {current_user}! I think we have found a match!'
-                             f' {current_user} says they have found {dog_name}. Now it is up to the two of you to do the rest.'
-                             f'{dog_owner}, once you get your dog back remember to update {dog_name}\'s profile to let '
-                             f'everyone know they can stop looking.'
+                html_message=f'Hello {dog_owner} and {current_user}, <br /> <br />  Looks like we may have found a match!'
+                             f'<br /> {current_user} says they have found {dog_name}. Now it is up to the two of you to do the rest.'
+                             f'<br />  Use this email thread to coordinate getting {dog_name} back home. '
+                             f'<br /> <br /> {dog_owner}, once you get your dog back remember to update {dog_name}\'s profile to let '
+                             f'everyone know they can stop looking. <br /> <br /> Good luck!'
 
             )
+
+            #add biscuits to user who makes report
+            current_user_profile = get_object_or_404(UserProfile, user=current_user)
+            current_user_profile.points += 500
+            current_user_profile.save()
+
     context = {'dog': dog,
                'mapbox_api_key': secret.mapbox_api_key,
                'profile': profile}
@@ -251,7 +259,6 @@ def isawadog(request):
 
     breeds = sorted(breeds)
 
-
     dogs = DogProfile.objects.filter(dog_is_lost=True)
     coordinates = []
     for dog in dogs:
@@ -286,7 +293,18 @@ def isawadog(request):
                                               lat=lat, long=lng)
         missing_dog_report.save()
 
+        #add random amount of biscuits to user account
+        random_num = random.randint(1, 25)
+        print(random_num)
+        current_user = request.user
+        current_user_profile = get_object_or_404(UserProfile, user=current_user)
+        current_user_profile.points += 1000*random_num
+        current_user_profile.save()
+
+        return HttpResponseRedirect(reverse('doggonnitapp:unknowndogmap')) #go do unknowndog map after submitting form
     return render(request, 'doggonnitapp/isawadog.html', context)
+
+
 
 #add marker when you know which exact dog you saw
 def irecognizethatdog(request, dog_id):
@@ -307,14 +325,14 @@ def irecognizethatdog(request, dog_id):
     )
     missing_dog_report.save()
 
-#prepare info for email
+    #prepare info for email
     dog_name = dog.name
     email_list = ['doggoneitapp@gmail.com']
     user_email = dog.user.email
     email_list.append(user_email)
     print(user_email)
-    dog_owner = dog.user.username
-    nl ='\\n' #this isnt working
+    # dog_owner = dog.user.username
+    dog_owner = dog.user
 
     #address to dog profile
     map_address = 'http://' + request.get_host() + reverse('doggonnitapp:dog_profile', kwargs={'dog_id': dog_id})
@@ -326,10 +344,15 @@ def irecognizethatdog(request, dog_id):
         'doggoneitapp@gmail.com',
         email_list,
         fail_silently=False,
-        html_message=f'Hello {dog_owner}. Another user said they saw your dog. Go check the <a href="{map_address}">MAP</a> for the most recent location.'
-                     f'{nl}Good Luck!'
+        html_message=f'Hello {dog_owner}, <br /> <br />  Another user said they saw your dog! Go check the <a href="{map_address}">MAP</a> for the most recent location.'
+                     f' <br /> <br />  Good Luck! '
     )
 
+    #add biscuits to user account
+    current_user = request.user
+    current_user_profile = get_object_or_404(UserProfile, user=current_user)
+    current_user_profile.points += 250
+    current_user_profile.save()
 
     return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
 
