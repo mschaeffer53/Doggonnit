@@ -150,5 +150,5 @@ A basic account will let you:
 - clicking the logo should redirect to the dogmap or index page
 - about page???
 - ~~add unknown dog and have it redirect to unknown dog map~~
-- bitcoin qr code thing
+- ~~bitcoin qr code thing~~
 - test app

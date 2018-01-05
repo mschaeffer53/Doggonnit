@@ -359,13 +359,6 @@ def irecognizethatdog(request, dog_id):
 
     return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
 
-def addbiscuits(user, points):
-    current_user = user
-    current_user_profile = get_object_or_404(UserProfile, user=current_user)
-    current_user_profile.points += points
-    current_user_profile.save()
-
-
 #map of an individual missing dog
 def dogprofilemap(request, dog_id):
 
@@ -385,3 +378,12 @@ def unknowndogmap(request):
     markers = MissingDogReport.objects.filter(dog=None)
     return render(request, 'doggonnitapp/unknowndogmap.html', {'markers':markers, 'mapbox_api_key': secret.mapbox_api_key})
 
+def about(request):
+    addbiscuits(request.user, 487267)
+    return render(request, 'doggonnitapp/about.html', {})
+
+def addbiscuits(user, points):
+    current_user = user
+    current_user_profile = get_object_or_404(UserProfile, user=current_user)
+    current_user_profile.points += points
+    current_user_profile.save()

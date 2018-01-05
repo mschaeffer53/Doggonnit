@@ -28,7 +28,7 @@
 <div class="container">
 
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-        <a class="navbar-brand" href="#"><img src="{% static 'doggonnitapp/doggoneit_dp_v2.png' %}" height="50"
+        <a class="navbar-brand" href="{% url 'doggonnitapp:dogmap' %}"><img src="{% static 'doggonnitapp/doggoneit_dp_v2.png' %}" height="50"
                                               id="site_logo"/></a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
                 data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,6 +75,7 @@
 
 <hr/>
 <div class="container">
+    <a href="{% url 'doggonnitapp:about' %}">About</a>
     Doggoneit App. 2018. All rights reserved...or something like that.
     Donate Bitcoin: <a href="{% static 'doggonnitapp/qr.png' %}" target="_blank">1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2</a>
 </div>
