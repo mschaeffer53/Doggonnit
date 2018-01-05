@@ -86,53 +86,55 @@ def create_user_profile(request):
 
 #add new dog to user profile
 def create_dog_profile(request):
-    ages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    weights = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
-    breeds = ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Beagle',
-              'Poodle', 'Rottweiler', 'Boxer', 'Pointer', 'Yorkshire Terrier', 'French Bulldog', 'Siberian Husky',
-              'Great Dane', 'Doberman', 'Aussie Shepherd', 'Schnauzer', 'Corgi', 'Shih Tzu', 'Pomeranian',
-              'Sheepdog', 'Snoop Dogg', 'Cocker Spaniel', 'Bernese Mountain Dog', 'Mastiff', 'Chihuahua', 'Pug', 'Maltese',
-              'Newfoundland', 'Collie', 'Basset Hound', 'Akita', 'St. Bernard', 'Bloodhound', 'Whippet', 'Chow Chow',
-              'Bull Terrier', 'Pit Bull', 'Greyhound', 'Aussie Cattle Dog', 'Dachshund', 'English Bulldog',
-              'Jack Russel Terrier', 'Staffordshire Bull Terrier', 'Wheaton Terrier', 'Malamute']
-    colors = ['Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
-    patterns = ['Single-color', 'Spotted', 'Tuxedo', 'Brindle', 'Harlequin', 'Tricolor', 'Black and Tan', 'Two-color']
-    personalities = ['Aggressive', 'Playful', 'Friendly', 'Timid/shy', 'Fear-based', 'Feral', 'Rabid']
-    breeds = sorted(breeds)
-    colors = sorted(colors)
-    patterns = sorted(patterns)
-    personalities = sorted(personalities)
+    if request.user.is_authenticated():
+        ages = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+        weights = [5, 10, 15, 20, 25, 30, 35, 40, 50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150]
+        breeds = ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Beagle',
+                  'Poodle', 'Rottweiler', 'Boxer', 'Pointer', 'Yorkshire Terrier', 'French Bulldog', 'Siberian Husky',
+                  'Great Dane', 'Doberman', 'Aussie Shepherd', 'Schnauzer', 'Corgi', 'Shih Tzu', 'Pomeranian',
+                  'Sheepdog', 'Snoop Dogg', 'Cocker Spaniel', 'Bernese Mountain Dog', 'Mastiff', 'Chihuahua', 'Pug', 'Maltese',
+                  'Newfoundland', 'Collie', 'Basset Hound', 'Akita', 'St. Bernard', 'Bloodhound', 'Whippet', 'Chow Chow',
+                  'Bull Terrier', 'Pit Bull', 'Greyhound', 'Aussie Cattle Dog', 'Dachshund', 'English Bulldog',
+                  'Jack Russel Terrier', 'Staffordshire Bull Terrier', 'Wheaton Terrier', 'Malamute']
+        colors = ['Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
+        patterns = ['Single-color', 'Spotted', 'Tuxedo', 'Brindle', 'Harlequin', 'Tricolor', 'Black and Tan', 'Two-color']
+        personalities = ['Aggressive', 'Playful', 'Friendly', 'Timid/shy', 'Fear-based', 'Feral', 'Rabid']
+        breeds = sorted(breeds)
+        colors = sorted(colors)
+        patterns = sorted(patterns)
+        personalities = sorted(personalities)
 
-    context = {'weights': weights,
-               'breeds': breeds,
-               'colors': colors,
-                'personalities': personalities,
-               'patterns': patterns,
-               'ages': ages}
+        context = {'weights': weights,
+                   'breeds': breeds,
+                   'colors': colors,
+                    'personalities': personalities,
+                   'patterns': patterns,
+                   'ages': ages}
 
-    if request.method == 'POST':
-        dog_name = request.POST['name']
-        dog_age = request.POST['age']
-        dog_sex = request.POST['sex']
-        dog_breed = request.POST['breed']
-        dog_color = request.POST['color']
-        dog_pattern = request.POST['pattern']
-        dog_weight = request.POST['weight']
-        dog_personality = request.POST['personality']
-        dog_image = request.FILES['dog_image']
-        dog_description = request.POST['description']
-        missing_since = None
+        if request.method == 'POST':
+            dog_name = request.POST['name']
+            dog_age = request.POST['age']
+            dog_sex = request.POST['sex']
+            dog_breed = request.POST['breed']
+            dog_color = request.POST['color']
+            dog_pattern = request.POST['pattern']
+            dog_weight = request.POST['weight']
+            dog_personality = request.POST['personality']
+            dog_image = request.FILES['dog_image']
+            dog_description = request.POST['description']
+            missing_since = None
 
 
-        profile = DogProfile(name=dog_name, age=dog_age, sex=dog_sex, breed=dog_breed, color=dog_color,
-                             pattern=dog_pattern, weight=dog_weight, personality=dog_personality,
-                             dog_image=dog_image, description=dog_description, user=request.user, missing_since=missing_since)
-        profile.save()
+            profile = DogProfile(name=dog_name, age=dog_age, sex=dog_sex, breed=dog_breed, color=dog_color,
+                                 pattern=dog_pattern, weight=dog_weight, personality=dog_personality,
+                                 dog_image=dog_image, description=dog_description, user=request.user, missing_since=missing_since)
+            profile.save()
 
-        return HttpResponseRedirect(reverse('doggonnitapp:dog_profile', kwargs={'dog_id':profile.id}))
+            return HttpResponseRedirect(reverse('doggonnitapp:dog_profile', kwargs={'dog_id':profile.id}))
 
-    return render(request, 'doggonnitapp/addDog.html', context)
-
+        return render(request, 'doggonnitapp/addDog.html', context)
+    else:
+        return HttpResponseRedirect(reverse('doggonnitapp:index'))
 
 
 # the information for a single missing dog
@@ -196,17 +198,6 @@ def dog_profile(request, dog_id):
 
 # a map of all the owner reported missing dogs
 def dogmap(request):
-    # weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
-    # colors = ['Dark', 'Light', 'Chocolate', 'Red', 'Black', 'White', 'Black and White', 'Gold or Yellow', 'Blue', 'Grey', 'Fawn', 'Cream']
-    # breeds = ['Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Bulldog', 'Beagle',
-    #           'Poodle', 'Rottweiler', 'Boxer', 'Pointer', 'Yorkshire Terrier', 'French Bulldog', 'Siberian Husky',
-    #           'Great Dane', 'Doberman', 'Aussie Shepherd', 'Schnauzer', 'Corgi', 'Shih Tzu', 'Pomeranian',
-    #           'Sheepdog', 'Snoop Dogg', 'Cocker Spaniel', 'Bernese Mountain Dog', 'Mastiff', 'Chihuahua', 'Pug', 'Maltese',
-    #           'Newfoundland', 'Collie', 'Basset Hound', 'Akita', 'St. Bernard', 'Bloodhound', 'Whippet', 'Chow Chow',
-    #           'Bull Terrier', 'Pit Bull', 'Greyhound', 'Aussie Cattle Dog', 'Dachshund', 'English Bulldog',
-    #           'Jack Russel Terrier', 'Staffordshire Bull Terrier', 'Wheaton Terrier', 'Malamute']
-    # ages = ['puppy', 'adult', 'really old looking']
-
     dogs = DogProfile.objects.filter(dog_is_lost=True)
     coordinates = []
     for dog in dogs:
@@ -239,10 +230,13 @@ def add_marker(request):
 
 #account details
 def myaccount(request):
-    print(request.user)
-    profile = get_object_or_404(UserProfile, user=request.user)
-    dogs = DogProfile.objects.filter(user=request.user)
-    return render(request, 'doggonnitapp/myaccount.html', {'profile':profile, 'dogs':dogs})
+    if request.user.is_authenticated():
+        print(request.user)
+        profile = get_object_or_404(UserProfile, user=request.user)
+        dogs = DogProfile.objects.filter(user=request.user)
+        return render(request, 'doggonnitapp/myaccount.html', {'profile':profile, 'dogs':dogs})
+    else:
+        return HttpResponseRedirect(reverse('doggonnitapp:index'))
 
 #about view
 def about(request):
@@ -299,13 +293,6 @@ def isawadog(request):
         missing_dog_report.save()
 
         #add random amount of biscuits to user account
-        # random_num = random.randint(1, 25)
-        # print(random_num)
-        # current_user = request.user
-        # current_user_profile = get_object_or_404(UserProfile, user=current_user)
-        # current_user_profile.points += 1000*random_num
-        # current_user_profile.save()
-
         addbiscuits(request.user, 1000 * random.randint(1, 25))
 
         return HttpResponseRedirect(reverse('doggonnitapp:unknowndogmap')) #go do unknowndog map after submitting form
@@ -356,17 +343,12 @@ def irecognizethatdog(request, dog_id):
     )
 
     #add biscuits to user account
-    # current_user = request.user
-    # current_user_profile = get_object_or_404(UserProfile, user=current_user)
-    # current_user_profile.points += 250
-    # current_user_profile.save()
     addbiscuits(request.user, 250)
 
     return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
 
 #map of an individual missing dog
 def dogprofilemap(request, dog_id):
-
     dog = DogProfile.objects.get(pk=dog_id)
     dog_markers = []
     for dog_report in dog.missingdogreport_set.all():
@@ -379,7 +361,6 @@ def dogprofilemap(request, dog_id):
 
 #map of dogs from isawadog (unknown missing dogs)
 def unknowndogmap(request):
-
     markers = MissingDogReport.objects.filter(dog=None)
     return render(request, 'doggonnitapp/unknowndogmap.html', {'markers':markers, 'mapbox_api_key': secret.mapbox_api_key})
 

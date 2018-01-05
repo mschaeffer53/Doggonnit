@@ -154,4 +154,4 @@ A basic account will let you:
 ~~Line connecting the points~~
 ~~Get custom markers for dogmap homes~~
 - stats about dogs found or spotted
-- user must be logged in to view register dog/my account page. redirect to log-in
+- ~~user must be logged in to view register dog/my account page. redirect to log-in~~
