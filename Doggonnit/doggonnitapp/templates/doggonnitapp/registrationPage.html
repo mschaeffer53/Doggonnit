@@ -12,14 +12,13 @@
     <input id="password_input" type="password" placeholder="password" name="password" required>
     <input id="email_input" type="email" placeholder="Email" name="email" required>
     <input id="address_input" type="text" placeholder="Street address" name="address" required>
-
-    <input type="text" placeholder="City" name="city" required>
+    <input id="city_input" type="text" placeholder="City" name="city" required>
 
     <span id="username_info" style="display: none; color:red;">Username must be between 6-99 chars; a-z & 0-9 only. </span>
     <span id="password_info" style="display:none; color:red;">Password must be between 6-99 characters. </span>
     <span id="email_info" style="display: none; color:red;">Enter valid email. </span>
     <span id="address_info" style="display: none; color:red">Enter valid address. </span>
-
+    <span id="city_info" style="display: none; color:red">Enter valid city. </span>
 
     <select name="state" required>
         {% for state in states %}
@@ -89,7 +88,7 @@
 
 
     //regex for address pattern
-    let address_pattern = /^\d{1,5}(\s[\w.]+)?\s\w{2,}\s\w{2,}$/;
+    let address_pattern = /^\d{1,5}(\s[\w.]+)?\s\w{2,}\s\w{2,}/;
 
     //address validation
     let address_input = document.querySelector("#address_input");
@@ -102,6 +101,23 @@
         } else{
             this.style.outline = '2px solid lightseagreen';
             address_info.style.display = 'none';
+        }
+    };
+
+    //regex for city pattern. At least 2 letters
+    let city_pattern = /^[a-zA-Z]{2,}$/;
+
+    //address validation
+    let city_input = document.querySelector("#city_input");
+    let city_info = document.querySelector("#city_info");
+
+    city_input.onblur = function(){
+        if (!city_pattern.test(this.value)){
+            this.style.outline = '1px solid red';
+            city_info.style.display = 'inline';
+        } else{
+            this.style.outline = '2px solid lightseagreen';
+            city_info.style.display = 'none';
         }
     };
 
