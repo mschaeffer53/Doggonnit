@@ -8,11 +8,18 @@
 <form action="{% url 'doggonnitapp:create_user_profile' %}" method="POST">
     {% csrf_token %}
 
-    <input type="text" placeholder="user name" name="username" required>
-    <input type="password" placeholder="password" name="password" required>
-    <input type="email" placeholder="Email" name="email" required>
-    <input type="text" placeholder="Street address" name="address" required>
+    <input id="username_input" type="text" placeholder="username" name="username" required>
+    <input id="password_input" type="password" placeholder="password" name="password" required>
+    <input id="email_input" type="email" placeholder="Email" name="email" required>
+    <input id="address_input" type="text" placeholder="Street address" name="address" required>
+
     <input type="text" placeholder="City" name="city" required>
+
+    <span id="username_info" style="display: none; color:red;">Username must be between 6-99 chars; a-z & 0-9 only. </span>
+    <span id="password_info" style="display:none; color:red;">Password must be between 6-99 characters. </span>
+    <span id="email_info" style="display: none; color:red;">Enter valid email. </span>
+    <span id="address_info" style="display: none; color:red">Enter valid address. </span>
+
 
     <select name="state" required>
         {% for state in states %}
@@ -27,4 +34,78 @@
 
 </form>
 </div>
+
+<script>
+    //regular expression for username. Any letter or number between 6-99 chars
+    let username_pattern = /^[\w]{6,99}$/;
+
+    //username regex validation
+    let username_input = document.querySelector("#username_input");
+    let username_info = document.querySelector("#username_info");
+
+    username_input.onblur = function () {
+        if (!username_pattern.test(this.value)){
+            this.style.outline = '1px solid red';
+            username_info.style.display = 'inline';
+        } else {
+            this.style.outline = '2px solid lightseagreen';
+            username_info.style.display = 'none';
+        }
+    };
+
+    //password regex pattern. Any char between 6-99 chars
+    let password_pattern = /^[\w+\W]{6,99}$/;
+
+    //password regex validation
+    let password_input = document.querySelector("#password_input");
+    let password_info = document.querySelector("#password_info");
+
+    password_input.onblur = function () {
+        if (!password_pattern.test(this.value)){
+            this.style.outline = '1px solid red';
+            password_info.style.display = 'inline';
+        } else {
+            this.style.outline = '2px solid lightseagreen';
+            password_info.style.display = 'none';
+        }
+    };
+
+    //regular expression for email
+    let email_pattern = /^\w+@\w+\.\w+$/;
+
+    //email validation
+    let email_input = document.querySelector("#email_input");
+    let email_info = document.querySelector("#email_info");
+
+    email_input.onblur = function(){
+        if (!email_pattern.test(this.value)){
+            this.style.outline = '1px solid red';
+            email_info.style.display = 'inline';
+        } else{
+            this.style.outline = '2px solid lightseagreen';
+            email_info.style.display = 'none';
+        }
+    };
+
+
+    //regex for address pattern
+    let address_pattern = /^\d{1,5}(\s[\w.]+)?\s\w{2,}\s\w{2,}$/;
+
+    //address validation
+    let address_input = document.querySelector("#address_input");
+    let address_info = document.querySelector("#address_info");
+
+    address_input.onblur = function(){
+        if (!address_pattern.test(this.value)){
+            this.style.outline = '1px solid red';
+            address_info.style.display = 'inline';
+        } else{
+            this.style.outline = '2px solid lightseagreen';
+            address_info.style.display = 'none';
+        }
+    };
+
+</script>
+
+
 {% endblock %}

@@ -25,7 +25,7 @@ Features:
 
 Libraries and frameworks:
 - Django; GET and POST profile information to the database
-- Geodjango or Mapbox to create maps and exract location information
+- Geodjango or Mapbox to create maps and extract location information
 
 **Functionality**
 
@@ -47,9 +47,7 @@ A basic account will let you:
  and a line connecting the dots of a specific dog chronologically. The line connecting the 
  points will be stylized so that you can tell where the dog was most recently seen.
         
-        #TODO 
-        ~~Line connecting the points~~
-        Get custom markers for dogmap homes
+
  ~~Users can click on dog profiles to get more details about the dog (e.g. name, breed, age, pictures, rewards).~~
  
  *Recovering a lost dog*
@@ -104,10 +102,10 @@ A basic account will let you:
   - ~~User profiles~~
   - ~~Dog profiles~~
   - ~~Maps~~
-  - Alert System
+  - ~~Alert System~~
   
   *Milestone 2*
-  - Fun reward system
+  - ~~Fun reward system~~ (its not fun but its there)
   - App stats
   
   *Milestone 3*
@@ -152,3 +150,7 @@ A basic account will let you:
 - ~~add unknown dog and have it redirect to unknown dog map~~
 - ~~bitcoin qr code thing~~
 - test app
+- regex forms
+~~Line connecting the points~~
+~~Get custom markers for dogmap homes~~
+- stats about dogs found or spotted
