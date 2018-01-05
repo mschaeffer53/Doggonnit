@@ -150,7 +150,8 @@ A basic account will let you:
 - ~~add unknown dog and have it redirect to unknown dog map~~
 - ~~bitcoin qr code thing~~
 - test app
-- regex forms
+- ~~regex forms~~
 ~~Line connecting the points~~
 ~~Get custom markers for dogmap homes~~
 - stats about dogs found or spotted
+- user must be logged in to view register dog/my account page. redirect to log-in

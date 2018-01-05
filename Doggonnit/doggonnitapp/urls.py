@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^test_json/$', views.test, name='test'),
     url(r'^dogprofilemap/(?P<dog_id>[0-9]+)/$', views.dogprofilemap, name='dogprofilemap'),
     url(r'^unknowndogmap/$', views.unknowndogmap, name='unknowndogmap'),
-    url(r'^about/$', views.about, name='about'),
+    url(r'^about/$', views.about, name='about')
 ]
 
 if settings.DEBUG:

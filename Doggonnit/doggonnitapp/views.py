@@ -244,6 +244,11 @@ def myaccount(request):
     dogs = DogProfile.objects.filter(user=request.user)
     return render(request, 'doggonnitapp/myaccount.html', {'profile':profile, 'dogs':dogs})
 
+#about view
+def about(request):
+    addbiscuits(request.user, 1)
+    return render(request, 'doggonnitapp/about.html')
+
 #add marker when you saw an unknown dog
 def isawadog(request):
     weights = ['less than 40 lbs', 'between 35-75 lbs', 'greater than 65 lbs']
@@ -378,10 +383,7 @@ def unknowndogmap(request):
     markers = MissingDogReport.objects.filter(dog=None)
     return render(request, 'doggonnitapp/unknowndogmap.html', {'markers':markers, 'mapbox_api_key': secret.mapbox_api_key})
 
-def about(request):
-    addbiscuits(request.user, 487267)
-    return render(request, 'doggonnitapp/about.html', {})
-
+#add biscuits function
 def addbiscuits(user, points):
     current_user = user
     current_user_profile = get_object_or_404(UserProfile, user=current_user)
