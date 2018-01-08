@@ -1,9 +1,11 @@
 {% load static %}
 
 <head>
-    <!--mapbox stuff-->
+
     <title>Doggoneit</title>
     <link rel="icon" href="{% static 'doggonnitapp/doggoneit_favicon.png' %}"/>
+
+     <!--mapbox stuff-->
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet'/>
 
@@ -22,9 +24,9 @@
 
     <!--static file-->
     <link rel="stylesheet" href="{% static 'doggonnitapp/style.css' %}"/>
-
-
 </head>
+
+<!--navbar-->
 <div class="container">
 
     <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
@@ -74,6 +76,8 @@
 {% endblock %}
 
 <hr/>
+
+<!--footer-->
 <div class="container">
     <a href="{% url 'doggonnitapp:about' %}">About</a>
     Doggoneit App. 2018. All rights reserved...or something like that.

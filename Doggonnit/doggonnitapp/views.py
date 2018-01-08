@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 import random
 
 
-from .models import UserProfile, DogProfile, MissingDogReport
+from .models import UserProfile, DogProfile, MissingDogReport, Stats
 from django.contrib.auth.models import User, Group
 from django.core.files import File
 from django.core.files.storage import FileSystemStorage
@@ -166,6 +166,13 @@ def dog_profile(request, dog_id):
             dog.missing_since = timezone.now()
             dog.save()
             MissingDogReport.objects.filter(dog=dog).delete() #when dog is found delete missing markers
+
+            # add dog found to stats
+            if dog.dog_is_lost == False:
+                dogs_found = Stats.objects.get(name='dogs_found')
+                dogs_found.value = int(dogs_found.value) + 1
+                dogs_found.save()
+
         else: #alert the dog owner with email or give the contact info
             print('notify owner')
             # send email to the owner of missing dog when someone adds a new point to the dog profile map
@@ -219,13 +226,12 @@ def dogmap(request):
         'mapbox_api_key': secret.mapbox_api_key
     }
 
-
     return render(request, 'doggonnitapp/dogmap.html', context)
 
 
 #problable wont use this
-def add_marker(request):
-    return HttpResponse('markers added')
+# def add_marker(request):
+#     return HttpResponse('markers added')
     # return HttpResponseRedirect(reverse('doggonnitapp:dogmap'))
 
 #account details
@@ -240,8 +246,11 @@ def myaccount(request):
 
 #about view
 def about(request):
-    addbiscuits(request.user, 1)
-    return render(request, 'doggonnitapp/about.html')
+    dogs_found = Stats.objects.get(name='dogs_found') #grab stats
+    dogs_seen = Stats.objects.get(name='dogs_seen')
+
+    addbiscuits(request.user, 1) #add b
+    return render(request, 'doggonnitapp/about.html', {'dogs_found':dogs_found, 'dogs_seen':dogs_seen})
 
 #add marker when you saw an unknown dog
 def isawadog(request):
@@ -295,6 +304,11 @@ def isawadog(request):
         #add random amount of biscuits to user account
         addbiscuits(request.user, 1000 * random.randint(1, 25))
 
+        # add dog seen to stats
+        dogs_seen = Stats.objects.get(name='dogs_seen')
+        dogs_seen.value = int(dogs_seen.value) + 1
+        dogs_seen.save()
+
         return HttpResponseRedirect(reverse('doggonnitapp:unknowndogmap')) #go do unknowndog map after submitting form
     return render(request, 'doggonnitapp/isawadog.html', context)
 
@@ -345,6 +359,11 @@ def irecognizethatdog(request, dog_id):
     #add biscuits to user account
     addbiscuits(request.user, 250)
 
+    #add dog seen to stats
+    dogs_seen = Stats.objects.get(name='dogs_seen')
+    dogs_seen.value = int(dogs_seen.value)+1
+    dogs_seen.save()
+
     return redirect('doggonnitapp:dog_profile', dog_id=dog.pk)
 
 #map of an individual missing dog
@@ -370,3 +389,4 @@ def addbiscuits(user, points):
     current_user_profile = get_object_or_404(UserProfile, user=current_user)
     current_user_profile.points += points
     current_user_profile.save()
+

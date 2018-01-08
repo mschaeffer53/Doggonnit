@@ -56,4 +56,9 @@ class MissingDogReport(models.Model):
             return f'{self.timestamp} {self.description} {self.weight} {self.age} {self.color} {self.breed}'
 
 
+class Stats(models.Model):
+    name = models.CharField(max_length=20)
+    value = models.CharField(max_length=10)
 
+    def __str__(self):
+        return f'{self.name} {self.value}'

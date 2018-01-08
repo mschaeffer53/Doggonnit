@@ -145,8 +145,8 @@ A basic account will let you:
 - ~~Popups with timestamp and description/details on the dog profile map~~
 - ~~get newlines to work in emails~~
 - get rid of popup that is "undefined" on the dog profile map pic
-- clicking the logo should redirect to the dogmap or index page
-- about page???
+- ~~clicking the logo should redirect to the dogmap or index page~~
+- ~~about page???~~
 - ~~add unknown dog and have it redirect to unknown dog map~~
 - ~~bitcoin qr code thing~~
 - test app

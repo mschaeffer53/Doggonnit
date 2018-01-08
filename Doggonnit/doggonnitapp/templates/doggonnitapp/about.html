@@ -1,4 +1,4 @@
-<h1>about page</h1>
+<h1>about doggoneit</h1>
 <hr/>
 
 <h2>You've been a good boy haven't you? Have some extra biscuits!</h2>
@@ -14,4 +14,14 @@
     I'd like to thank Matthew Cooper and Nick Riehl for their tremendous help. <br />
     Shout outs to my cohort too! What an awesome gang of coders!! <br />
 </p>
+
+<hr/>
+<h3>Doggy statistics</h3>
+<ul>
+    <li>Dogs seen: {{ dogs_seen.value }}</li>
+    <li>Dogs found: {{ dogs_found.value }}</li>
+    <li>Dog profiles: ???</li>
+</ul>
+
+<a href="{% url 'doggonnitapp:dogmap' %}">Dog Map</a>
 
