@@ -130,6 +130,11 @@ def create_dog_profile(request):
                                  dog_image=dog_image, description=dog_description, user=request.user, missing_since=missing_since)
             profile.save()
 
+            #add to dog profiles stats
+            dog_profiles = Stats.objects.get(name='dog_profiles')
+            dog_profiles.value = int(dog_profiles.value) + 1
+            dog_profiles.save()
+
             return HttpResponseRedirect(reverse('doggonnitapp:dog_profile', kwargs={'dog_id':profile.id}))
 
         return render(request, 'doggonnitapp/addDog.html', context)
@@ -246,11 +251,15 @@ def myaccount(request):
 
 #about view
 def about(request):
-    dogs_found = Stats.objects.get(name='dogs_found') #grab stats
+    # grab stats
+    dogs_found = Stats.objects.get(name='dogs_found')
     dogs_seen = Stats.objects.get(name='dogs_seen')
+    dog_profiles = Stats.objects.get(name='dog_profiles')
+    context = {'dogs_found':dogs_found, 'dogs_seen':dogs_seen, 'dog_profiles':dog_profiles}
 
-    addbiscuits(request.user, 1) #add b
-    return render(request, 'doggonnitapp/about.html', {'dogs_found':dogs_found, 'dogs_seen':dogs_seen})
+    addbiscuits(request.user, 1) #add biscuits
+
+    return render(request, 'doggonnitapp/about.html', context)
 
 #add marker when you saw an unknown dog
 def isawadog(request):
