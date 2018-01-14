@@ -25,7 +25,8 @@ Features:
 
 Libraries and frameworks:
 - Django; GET and POST profile information to the database
-- Geodjango or Mapbox to create maps and extract location information
+- Bootstrap; page layout
+- ~~Geodjango or~~ Mapbox to create maps and extract location information
 
 **Functionality**
 
@@ -106,7 +107,7 @@ A basic account will let you:
   
   *Milestone 2*
   - ~~Fun reward system~~ (its not fun but its there)
-  - App stats
+  - ~~App stats~~
   
   *Milestone 3*
   - Blog page for success stories 
@@ -153,5 +154,5 @@ A basic account will let you:
 - ~~regex forms~~
 ~~Line connecting the points~~
 ~~Get custom markers for dogmap homes~~
-- stats about dogs found or spotted
+- ~~stats about dogs found or spotted~~
 - ~~user must be logged in to view register dog/my account page. redirect to log-in~~
